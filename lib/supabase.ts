@@ -1,44 +1,45 @@
-import { createClient } from "@supabase/supabase-js";
-import * as SecureStore from "expo-secure-store";
+import "react-native-url-polyfill/auto";
+import { createClient, Session } from "@supabase/supabase-js";
 
-// Läs din Supabase URL och Anon Key från Expo Environment Variables.
-// Se till att dessa variabler finns definierade i din .env-fil och app.config.js
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "";
+// --- TEMPORÄR NÖDÅTGÄRD: Hardkoda nycklarna pga. .env läsfel ---
+// Dessa måste tas bort EFTER att Dashboard-koden är committad och mergad.
+const supabaseUrl = "https://idxgcjvcdsxkinxixuoh.supabase.co";
+const supabaseAnonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeGdjanZjZHN4a2lueGl4dW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3NTc0NDIsImV4cCI6MjA3NTMzMzQ0Mn0.S1zY63OkiA9dy6_rL6HO88FWcJ34Ah7Loe--zMjlZYw";
+// ----------------------------------------------------------------
 
-// --- SecureStore Adapter för React Native ---
-// Supabase Auth behöver en asynkron lagringsadapter
-const ExpoSecureStoreAdapter = {
-  getItem: (key: string) => {
-    return SecureStore.getItemAsync(key);
-  },
-  setItem: (key: string, value: string) => {
-    SecureStore.setItemAsync(key, value);
-  },
-  removeItem: (key: string) => {
-    SecureStore.deleteItemAsync(key);
-  },
-};
-// ------------------------------------------
+// *******************************
+// NY DEBUG LOGG: Kontrollera om variabler hittades från .env
+console.log("--- SUPABASE CONFIG DEBUG ---");
+console.log(`URL Found: ${!!supabaseUrl}`);
+console.log(`Anon Key Length: ${supabaseAnonKey ? supabaseAnonKey.length : 0}`);
+console.log("-----------------------------");
+// *******************************
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  // Detta fel ska nu ALDRIG nås tack vare hardkodningen.
+  throw new Error(
+    "Supabase URL och Anon Key saknas. Kontrollera din .env-fil och att Expo läser in den."
+  );
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: ExpoSecureStoreAdapter as any, // Använd vår SecureStore-adapter
+    // Standardinställningar för Expo/React Native
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
   },
 });
 
-// Typdefinition för databasen (viktigt för TypeScript-säkerhet)
 export interface LinkItem {
   id: string;
-  // created_at är en automatisk tidsstämpel som läggs till av Supabase/PostgreSQL.
-  // Den är nödvändig för sortering i Dashboard.
-  created_at: string;
+  user_id: string;
   url: string;
   title: string;
-  description: string;
-  image: string | null;
-  user_id: string;
+  description: string | null;
+  image_url: string | null;
+  created_at: string;
 }
+
+export { Session };

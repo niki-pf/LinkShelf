@@ -7,9 +7,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import LinkCard from "@/components/LinkCard";
 import { supabase, LinkItem } from "@/lib/supabase";
-
+import LinkCard from "@/components/LinkCard";
 import { User } from "@supabase/supabase-js";
 
 export default function Dashboard() {
@@ -18,7 +17,7 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
-  // 1. Hämta inloggad användare ELLER sätt till null/ladda
+  // 1. Hämta inloggad användare
   useEffect(() => {
     const fetchUser = async () => {
       const {
@@ -29,12 +28,10 @@ export default function Dashboard() {
     fetchUser();
   }, []);
 
-  // 2. Användarens ID har ändrats (eller hittats) - hämta länkar och sätt upp lyssnare
+  // 2. Användarens ID har ändrats - hämta länkar och sätt upp lyssnare
   useEffect(() => {
-    // Hoppa över om användaren inte är känd ännu (initial laddning)
     if (user === undefined) return;
 
-    // Om vi inte har en användare, kan vi inte hämta länkar
     if (!user) {
       setError("Du måste vara inloggad för att se dina länkar.");
       setLoading(false);
@@ -50,7 +47,6 @@ export default function Dashboard() {
 
       const { data, error } = await supabase
         .from("links")
-        // Filter: Hämta bara länkar för den faktiska inloggade användaren
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -67,7 +63,7 @@ export default function Dashboard() {
       setLoading(false);
     };
 
-    // 3. Skapa en realtids-prenumeration (listener) INOM denna effekt
+    // 3. Skapa en realtids-prenumeration (listener)
     const linksChannel = supabase
       .channel("links_changes")
       .on(
@@ -77,23 +73,23 @@ export default function Dashboard() {
           schema: "public",
           table: "links",
           filter: `user_id=eq.${userId}`,
-        }, // FILTRERA PÅ ANVÄNDAR-ID
-        (payload) => {
+        },
+        () => {
           console.log("Realtime change received. Refetching links.");
           fetchLinks();
         }
       )
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
-          fetchLinks(); // Hämta initial data direkt vid prenumeration
+          fetchLinks();
         }
       });
 
-    // Rensa upp realtidsprenumerationen när komponenten unmount
+    // Rensa upp prenumerationen
     return () => {
       supabase.removeChannel(linksChannel);
     };
-  }, [user]); // Beroende på 'user' state
+  }, [user]);
 
   const renderContent = () => {
     if (loading) {
@@ -117,7 +113,6 @@ export default function Dashboard() {
       );
     }
 
-    // Rendera listan med LinkCard-komp
     return (
       <FlatList
         data={links}
@@ -131,12 +126,15 @@ export default function Dashboard() {
 
   return (
     <LinearGradient
-      colors={["#1A2980", "#26D0CE"]} // Deep Blue till Cyan
+      colors={["#1A2980", "#26D0CE"]}
       end={{ x: 1, y: 1 }}
       style={styles.container}
     >
       <View style={styles.contentArea}>
         <Text style={styles.headerText}>LinkShelf Dashboard</Text>
+
+        {/* HÄR KOMMER INPUT-KOMPONENTEN SEN */}
+
         <Text style={styles.subHeaderText}>Dina 5 Senaste Sparade Länkar</Text>
 
         {renderContent()}
@@ -145,6 +143,7 @@ export default function Dashboard() {
   );
 }
 
+// Stilar (Dessa är kompletta och fixar runtime-felet)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -169,13 +168,14 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   listContent: {
-    paddingBottom: 100, // Extra padding för att se sista kortet
+    paddingBottom: 100,
+    width: "100%",
   },
   centered: {
-    flex: 1,
-    justifyContent: "center",
+    padding: 20,
     alignItems: "center",
-    height: 200, // För att ge lite höjd i mitten av skärmen
+    justifyContent: "center",
+    minHeight: 150,
   },
   loadingText: {
     color: "white",
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   errorText: {
-    color: "#FFD1D1", // Ljus röd för felmeddelande
+    color: "#FFD1D1",
     textAlign: "center",
     padding: 20,
     fontSize: 16,
