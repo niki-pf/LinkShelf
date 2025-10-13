@@ -35,7 +35,7 @@ export default function Auth() {
       }}
     >
       <Image
-        source={require("../assets/logotyp.png")}
+        source={require("../assets/images/logotype.png")}
         style={{ width: 300, height: 300 }}
         resizeMode="contain"
       />

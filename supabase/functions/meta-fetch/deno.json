@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.ns", "deno.unstable", "dom", "dom.iterable", "esnext"]
+  },
+  "imports": {
+    "jsr:@supabase/supabase-js@2": "https://esm.sh/@supabase/supabase-js@2",
+    "https://deno.land/x/deno_dom@v0.1.43/deno-dom-wasm.ts": "https://deno.land/x/deno_dom@v0.1.43/deno-dom-wasm.ts"
+  }
+}
