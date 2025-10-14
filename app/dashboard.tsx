@@ -3,19 +3,17 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   ActivityIndicator,
+  FlatList,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase, LinkItem } from "@/lib/supabase";
-import LinkCard from "@/components/LinkCard";
 import { User } from "@supabase/supabase-js";
 
 export default function Dashboard() {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(undefined as unknown as User);
 
   // 1. Hämta inloggad användare
   useEffect(() => {
@@ -24,91 +22,43 @@ export default function Dashboard() {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
+
+      if (user) {
+        setLoading(false);
+      }
     };
     fetchUser();
   }, []);
 
-  // 2. Användarens ID har ändrats - hämta länkar och sätt upp lyssnare
-  useEffect(() => {
-    if (user === undefined) return;
+  // 2. funciton för att hämta länkar
+  const fetchLinks = async () => {
+    if (!user) return; // Gör inget om user inte är inloggad
 
-    if (!user) {
-      setError("Du måste vara inloggad för att se dina länkar.");
-      setLoading(false);
-      return;
-    }
+    setLoading(true);
 
-    const userId = user.id;
+    setLoading(false);
+  };
 
-    // Funktion för att hämta data
-    const fetchLinks = async () => {
-      setLoading(true);
-      setError(null);
-
-      const { data, error } = await supabase
-        .from("links")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(5);
-
-      if (error) {
-        console.error("Error fetching links:", error.message);
-        setError("Kunde inte hämta länkar: " + error.message);
-        setLoading(false);
-        return;
-      }
-
-      setLinks(data || []);
-      setLoading(false);
-    };
-
-    // 3. Skapa en realtids-prenumeration (listener)
-    const linksChannel = supabase
-      .channel("links_changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "links",
-          filter: `user_id=eq.${userId}`,
-        },
-        () => {
-          console.log("Realtime change received. Refetching links.");
-          fetchLinks();
-        }
-      )
-      .subscribe((status) => {
-        if (status === "SUBSCRIBED") {
-          fetchLinks();
-        }
-      });
-
-    // Rensa upp prenumerationen
-    return () => {
-      supabase.removeChannel(linksChannel);
-    };
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   const renderContent = () => {
-    if (loading) {
+    if (loading || user === undefined) {
       return (
         <View style={styles.centered}>
           <ActivityIndicator size="large" color="#FFFFFF" />
-          <Text style={styles.loadingText}>Laddar länkar...</Text>
+          <Text style={styles.loadingText}>Laddar...</Text>
         </View>
       );
     }
 
-    if (error) {
-      return <Text style={styles.errorText}>{error}</Text>;
+    if (!user) {
+      return <Text style={styles.errorText}>Vänligen logga in igen.</Text>;
     }
 
     if (links.length === 0) {
       return (
         <Text style={styles.emptyText}>
-          Inga länkar sparade ännu. Börja lägga till!
+          Din lista är tom! Börja spara länkar genom att trycka på "lägg till"
         </Text>
       );
     }
@@ -117,7 +67,9 @@ export default function Dashboard() {
       <FlatList
         data={links}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <LinkCard link={item} />}
+        renderItem={({ item }) => (
+          <Text style={styles.loadingText}>{item.title}</Text>
+        )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
@@ -131,11 +83,10 @@ export default function Dashboard() {
       style={styles.container}
     >
       <View style={styles.contentArea}>
-        <Text style={styles.headerText}>LinkShelf Dashboard</Text>
-
-        {/* HÄR KOMMER INPUT-KOMPONENTEN SEN */}
-
-        <Text style={styles.subHeaderText}>Dina 5 Senaste Sparade Länkar</Text>
+        <Text style={styles.headerText}>Dashboard</Text>
+        <Text style={styles.subHeaderText}>
+          Välkommen tillbaka, {user ? user.email : "Användare"}!
+        </Text>
 
         {renderContent()}
       </View>
@@ -143,7 +94,6 @@ export default function Dashboard() {
   );
 }
 
-// Stilar (Dessa är kompletta och fixar runtime-felet)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -164,11 +114,12 @@ const styles = StyleSheet.create({
   subHeaderText: {
     fontSize: 16,
     color: "rgba(255, 255, 255, 0.7)",
-    marginBottom: 20,
+    marginBottom: 30,
     fontWeight: "400",
+    alignSelf: "flex-start",
   },
   listContent: {
-    paddingBottom: 100,
+    paddingBottom: 200,
     width: "100%",
   },
   centered: {

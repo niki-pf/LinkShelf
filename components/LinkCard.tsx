@@ -4,135 +4,110 @@ import {
   Text,
   StyleSheet,
   Image,
-  Pressable,
   Linking,
+  TouchableOpacity,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinkItem } from "@/lib/supabase"; // Se till att sökvägen till din supabase.ts är rätt
-
-// URL för en fallback placeholder-bild om LinkCard inte hittar någon bild
-// OBS: För riktig app, lägg till din egen lokala placeholder-bild och använd require('...')
-const PLACEHOLDER_IMAGE_URL =
-  "https://placehold.co/600x400/CCCCCC/333333?text=LinkShelf";
+import { LinkItem } from "@/lib/supabase";
+import { AntDesign, Feather } from "@expo/vector-icons"; // Kräver 'expo install @expo/vector-icons'
+// Obs: Du kan behöva köra 'npx expo install @expo/vector-icons' i din terminal
 
 interface LinkCardProps {
   link: LinkItem;
 }
 
-const LinkCard: React.FC<LinkCardProps> = ({ link }) => {
-  // Kontrollerar om bilden är giltig (inte null, inte tom sträng)
-  const isImageValid = link.image && link.image.length > 5;
+const placeholderImage = "https://placehold.co/120x80/1F2937/FFFFFF?text=URL";
 
-  // Funktion för att öppna länken när kortet trycks
-  const handlePress = () => {
-    // Försök öppna URL, och hantera eventuella fel
+export default function LinkCard({ link }: LinkCardProps) {
+  const handleOpenLink = () => {
     Linking.openURL(link.url).catch((err) =>
       console.error("Kunde inte öppna länk: ", err)
     );
   };
 
-  // Funktion för att hämta domänen för snyggare visning
-  const getDomain = (url: string) => {
-    try {
-      // Använd URL API för att extrahera domän och ta bort 'www.'
-      return new URL(url).hostname.replace("www.", "");
-    } catch {
-      return "Okänd källa";
-    }
-  };
+  const displayImage = link.image_url || placeholderImage;
+  const displayTitle = link.title || link.url;
+  const displayDescription =
+    link.description || "Ingen beskrivning tillgänglig.";
 
   return (
-    <Pressable style={styles.card} onPress={handlePress}>
-      {/* Bild eller Placeholder-ikon */}
-      <View style={styles.imageContainer}>
-        {isImageValid ? (
-          <Image
-            source={{ uri: link.image }}
-            style={styles.cardImage}
-            resizeMode="cover"
-            onError={() => console.log(`Kunde inte ladda bild: ${link.image}`)}
-          />
-        ) : (
-          <View style={styles.placeholder}>
-            <MaterialIcons name="link" size={50} color="#1A2980" />
-            <Text style={styles.placeholderText}>Ingen förhandsvisning</Text>
-          </View>
-        )}
+    <TouchableOpacity
+      onPress={handleOpenLink}
+      style={styles.card}
+      activeOpacity={0.8}
+    >
+      <View style={styles.textContainer}>
+        <Text style={styles.title} numberOfLines={2}>
+          {displayTitle}
+        </Text>
+        <Text style={styles.description} numberOfLines={3}>
+          {displayDescription}
+        </Text>
+        <View style={styles.urlContainer}>
+          <Feather name="link" size={12} color="#AAAAAA" />
+          <Text style={styles.url} numberOfLines={1}>
+            {link.url}
+          </Text>
+        </View>
       </View>
 
-      {/* Textinnehåll */}
-      <View style={styles.textContainer}>
-        <Text style={styles.cardTitle} numberOfLines={2}>
-          {link.title}
-        </Text>
-        <Text style={styles.cardDescription} numberOfLines={3}>
-          {link.description || "Ingen beskrivning tillgänglig."}
-        </Text>
-        <Text style={styles.cardDomain}>{getDomain(link.url)}</Text>
-      </View>
-    </Pressable>
+      {/* Länkbild */}
+      <Image
+        source={{ uri: displayImage }}
+        style={styles.image}
+        onError={({ nativeEvent: { error } }) =>
+          console.log("Bildladdningsfel:", error)
+        }
+      />
+    </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   card: {
-    width: "100%",
-    backgroundColor: "white",
+    flexDirection: "row",
+    backgroundColor: "#FFFFFF",
     borderRadius: 12,
-    marginBottom: 15,
-    overflow: "hidden",
-    // iOS Shadow
+    padding: 12,
+    marginVertical: 8,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    // Android Elevation
-    elevation: 5,
-  },
-  imageContainer: {
-    width: "100%",
-    height: 180,
-    backgroundColor: "#f5f5f5",
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cardImage: {
-    width: "100%",
-    height: "100%",
-  },
-  placeholder: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-    width: "100%",
-  },
-  placeholderText: {
-    color: "#1A2980",
-    marginTop: 5,
-    fontSize: 12,
+    shadowRadius: 4,
+    elevation: 3,
+    minHeight: 100,
   },
   textContainer: {
-    padding: 15,
+    flex: 1,
+    paddingRight: 10,
+    justifyContent: "space-between",
   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#1A2980",
-    marginBottom: 5,
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#1F2937",
+    marginBottom: 4,
   },
-  cardDescription: {
-    fontSize: 14,
-    color: "#333",
-    marginBottom: 10,
+  description: {
+    fontSize: 13,
+    color: "#6B7280",
+    lineHeight: 18,
+    marginBottom: 8,
   },
-  cardDomain: {
-    fontSize: 12,
-    color: "#26D0CE",
-    fontWeight: "600",
+  urlContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4,
+  },
+  url: {
+    fontSize: 11,
+    color: "#4B5563",
+    marginLeft: 4,
+  },
+  image: {
+    width: 90,
+    height: 90,
+    borderRadius: 8,
+    resizeMode: "cover",
+    marginLeft: 10,
   },
 });
-
-export default LinkCard;
