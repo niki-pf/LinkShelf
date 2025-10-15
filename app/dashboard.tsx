@@ -9,9 +9,23 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase, LinkItem } from "@/lib/supabase";
 import { User } from "@supabase/supabase-js";
+import LinkCard from "@/components/LinkCard";
+
+const MOCK_LINKS: LinkItem[] = [
+  {
+    id: "mock-1",
+    user_id: "mock",
+    url: "https://svt.st/nyheter",
+    title: "SVt nyheter - Sveriges senaste",
+    description: "De senaste nyhterena blbalbalba",
+
+    image: "https://picsum.photos/400/500",
+    created_at: new Date().toISOString(),
+  },
+];
 
 export default function Dashboard() {
-  const [links, setLinks] = useState<LinkItem[]>([]);
+  const [links, setLinks] = useState<LinkItem[]>(MOCK_LINKS as LinkItem[]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(undefined as unknown as User);
 
@@ -23,7 +37,7 @@ export default function Dashboard() {
       } = await supabase.auth.getUser();
       setUser(user);
 
-      if (user) {
+      if (user !== undefined) {
         setLoading(false);
       }
     };
@@ -39,7 +53,11 @@ export default function Dashboard() {
     setLoading(false);
   };
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    if (user !== undefined) {
+      fetchLinks();
+    }
+  }, [user]);
 
   const renderContent = () => {
     if (loading || user === undefined) {
@@ -54,8 +72,8 @@ export default function Dashboard() {
     if (!user) {
       return <Text style={styles.errorText}>Vänligen logga in igen.</Text>;
     }
-
-    if (links.length === 0) {
+    const displayLinks = links.length === 0 ? MOCK_LINKS : links;
+    if (displayLinks.length === 0) {
       return (
         <Text style={styles.emptyText}>
           Din lista är tom! Börja spara länkar genom att trycka på "lägg till"
@@ -65,11 +83,9 @@ export default function Dashboard() {
 
     return (
       <FlatList
-        data={links}
+        data={displayLinks}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Text style={styles.loadingText}>{item.title}</Text>
-        )}
+        renderItem={({ item }) => <LinkCard link={item} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
@@ -84,9 +100,9 @@ export default function Dashboard() {
     >
       <View style={styles.contentArea}>
         <Text style={styles.headerText}>Dashboard</Text>
-        <Text style={styles.subHeaderText}>
+        {/* <Text style={styles.subHeaderText}>
           Välkommen tillbaka, {user ? user.email : "Användare"}!
-        </Text>
+        </Text> */}
 
         {renderContent()}
       </View>

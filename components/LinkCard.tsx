@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,108 +6,89 @@ import {
   Image,
   Linking,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { LinkItem } from "@/lib/supabase";
-import { AntDesign, Feather } from "@expo/vector-icons"; // Kräver 'expo install @expo/vector-icons'
-// Obs: Du kan behöva köra 'npx expo install @expo/vector-icons' i din terminal
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 interface LinkCardProps {
   link: LinkItem;
 }
 
-const placeholderImage = "https://placehold.co/120x80/1F2937/FFFFFF?text=URL";
+//placeholder bild
+const placeholderImage =
+  "https://placehold.co/400x150/D1D5DB/4B5563?text=BILD+SAKNAS";
 
 export default function LinkCard({ link }: LinkCardProps) {
-  const handleOpenLink = () => {
-    Linking.openURL(link.url).catch((err) =>
-      console.error("Kunde inte öppna länk: ", err)
-    );
-  };
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const displayImage = link.image_url || placeholderImage;
+  const displayImage = link.image || placeholderImage;
   const displayTitle = link.title || link.url;
   const displayDescription =
-    link.description || "Ingen beskrivning tillgänglig.";
+    link.description || "ingen beskrivning itllgänlgig";
 
   return (
-    <TouchableOpacity
-      onPress={handleOpenLink}
-      style={styles.card}
-      activeOpacity={0.8}
-    >
-      <View style={styles.textContainer}>
-        <Text style={styles.title} numberOfLines={2}>
-          {displayTitle}
-        </Text>
-        <Text style={styles.description} numberOfLines={3}>
-          {displayDescription}
-        </Text>
-        <View style={styles.urlContainer}>
-          <Feather name="link" size={12} color="#AAAAAA" />
-          <Text style={styles.url} numberOfLines={1}>
-            {link.url}
-          </Text>
+    //ÖVERSTA HALVAN AV KORTET : BILD
+    <View style={styles.card}>
+      <View style={styles.imageContainer}>
+        {isImageLoading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="small" color="#4b5563" />
+          </View>
+        )}
+        <Image
+          source={{ uri: displayImage }}
+          style={[styles.image, isImageLoading && { opacity: 0.1 }]}
+          resizeMode="cover"
+          onLoad={() => setIsImageLoading(false)}
+          onError={({ nativeEvent: { error } }) => {
+            setIsImageLoading(false);
+          }}
+        />
+      </View>
+      // UNDRE HALVAN : TEXT INNHEHÅLL
+      <View style={styles.contentContainer}>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{displayTitle}</Text>
+          <Text style={styles.description}>{displayDescription}</Text>
         </View>
       </View>
-
-      {/* Länkbild */}
-      <Image
-        source={{ uri: displayImage }}
-        style={styles.image}
-        onError={({ nativeEvent: { error } }) =>
-          console.log("Bildladdningsfel:", error)
-        }
-      />
-    </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 12,
-    marginVertical: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    minHeight: 100,
+    backgroundColor: "#ffffff",
+    borderRadius: 15,
+    elevation: 5,
+    width: "90%",
+    alignContent: "center",
   },
-  textContainer: {
-    flex: 1,
-    paddingRight: 10,
-    justifyContent: "space-between",
+
+  imageContainer: {
+    width: "100%",
+    height: 140,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#1F2937",
-    marginBottom: 4,
+
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  description: {
-    fontSize: 13,
-    color: "#6B7280",
-    lineHeight: 18,
-    marginBottom: 8,
-  },
-  urlContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 4,
-  },
-  url: {
-    fontSize: 11,
-    color: "#4B5563",
-    marginLeft: 4,
-  },
+
   image: {
-    width: 90,
-    height: 90,
-    borderRadius: 8,
-    resizeMode: "cover",
-    marginLeft: 10,
+    width: "100%",
+    height: "100%",
+    position: "absolute",
   },
+
+  contentContainer: {},
+  textContainer: {},
+
+  title: {},
+
+  description: {},
 });
