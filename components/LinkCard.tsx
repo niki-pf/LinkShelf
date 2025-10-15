@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { LinkItem } from "@/lib/supabase";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import { getDomain } from "../lib/util";
 
 interface LinkCardProps {
   link: LinkItem;
@@ -22,14 +23,19 @@ const placeholderImage =
 export default function LinkCard({ link }: LinkCardProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
+  const handleOpenLink = () => {
+    Linking.openURL(link.url).catch((err) =>
+      console.error("Kunde ej öppna länk: ", err)
+    );
+  };
+
   const displayImage = link.image || placeholderImage;
   const displayTitle = link.title || link.url;
-  const displayDescription =
-    link.description || "ingen beskrivning itllgänlgig";
+  const displayDescription = link.description || "Ingen beskrivning tillgänlig";
 
   return (
-    //ÖVERSTA HALVAN AV KORTET : BILD
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={handleOpenLink}>
+      {/* ÖVERSTA HALVAN - BILD */}
       <View style={styles.imageContainer}>
         {isImageLoading && (
           <View style={styles.loadingOverlay}>
@@ -46,14 +52,43 @@ export default function LinkCard({ link }: LinkCardProps) {
           }}
         />
       </View>
-      // UNDRE HALVAN : TEXT INNHEHÅLL
+      {/* UNDRE HALVAN - TEXT CONTENT / action knappar  */}
       <View style={styles.contentContainer}>
+        {/* TITEL OCH BESKRIVNING */}
         <View style={styles.textContainer}>
           <Text style={styles.title}>{displayTitle}</Text>
           <Text style={styles.description}>{displayDescription}</Text>
         </View>
+
+        {/* ACTIONS container/ KNAPPAR */}
+        <View style={styles.actionsContainer}>
+          {/* url */}
+          <View style={styles.urlContainer}>
+            <Feather name="link" size={12} color={"black"} />
+            <Text style={styles.urlContainer} numberOfLines={1}>
+              {getDomain(link.url)}
+            </Text>
+          </View>
+          {/* KNAPP SEKTION */}
+          <View style={styles.buttonsContainer}>
+            {/* öppna länk */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              // onPress={handleEditLink} behöver implementeras
+              activeOpacity={0.7}
+            />
+            <Feather name="edit-3" size={20} color="#1A2980" />
+            {/* ta bort  länk */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              // onPress={handleDeleteLink} behöver implementeras
+              activeOpacity={0.7}
+            />
+            <AntDesign name="delete" size={20} color={"#EF4444"} />
+          </View>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -62,13 +97,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 15,
     elevation: 5,
-    width: "90%",
+    width: "100%",
     alignContent: "center",
+    overflow: "hidden",
   },
 
   imageContainer: {
     width: "100%",
-    height: 140,
+    height: 100,
   },
 
   loadingOverlay: {
@@ -85,10 +121,37 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 
-  contentContainer: {},
+  contentContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
   textContainer: {},
 
-  title: {},
+  title: {
+    fontWeight: "bold",
+    paddingTop: 5,
+    fontSize: 16,
+  },
 
-  description: {},
+  description: {
+    fontWeight: "medium",
+    lineHeight: 20,
+    paddingBottom: 20,
+  },
+
+  actionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  urlContainer: {
+    flexDirection: "row",
+  },
+
+  buttonsContainer: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  actionButton: {},
 });
