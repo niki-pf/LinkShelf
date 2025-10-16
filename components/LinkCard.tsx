@@ -11,22 +11,34 @@ import {
 import { LinkItem } from "@/lib/supabase";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { getDomain } from "../lib/util";
+import * as WebBrowser from "expo-web-browser";
 
 interface LinkCardProps {
   link: LinkItem;
+  onDelete: (linkId: string) => void;
 }
 
 //placeholder bild
 const placeholderImage =
   "https://placehold.co/400x150/D1D5DB/4B5563?text=BILD+SAKNAS";
 
-export default function LinkCard({ link }: LinkCardProps) {
+export default function LinkCard({ link, onDelete }: LinkCardProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const handleOpenLink = () => {
-    Linking.openURL(link.url).catch((err) =>
-      console.error("Kunde ej öppna länk: ", err)
-    );
+  const handleOpenLink = async () => {
+    // provar expo-web-brower , som stabilare lösning
+    try {
+      await WebBrowser.openBrowserAsync(link.url);
+    } catch (err) {
+      console.error("Kunde inte öppna länk i webbläsare");
+    }
+    // Linking.openURL(link.url).catch((err) =>
+    //   console.error("Kunde ej öppna länk: ", err)
+    // );
+  };
+
+  const handleDeleteLink = () => {
+    onDelete(link.id);
   };
 
   const displayImage = link.image || placeholderImage;
@@ -56,8 +68,12 @@ export default function LinkCard({ link }: LinkCardProps) {
       <View style={styles.contentContainer}>
         {/* TITEL OCH BESKRIVNING */}
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{displayTitle}</Text>
-          <Text style={styles.description}>{displayDescription}</Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {displayTitle}
+          </Text>
+          <Text style={styles.description} numberOfLines={2}>
+            {displayDescription}
+          </Text>
         </View>
 
         {/* ACTIONS container/ KNAPPAR */}
@@ -81,10 +97,14 @@ export default function LinkCard({ link }: LinkCardProps) {
             {/* ta bort  länk */}
             <TouchableOpacity
               style={styles.actionButton}
-              // onPress={handleDeleteLink} behöver implementeras
+              onPress={(e) => {
+                e.stopPropagation();
+                handleDeleteLink();
+              }}
               activeOpacity={0.7}
-            />
-            <AntDesign name="delete" size={20} color={"#EF4444"} />
+            >
+              <AntDesign name="delete" size={20} color={"#EF4444"} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -100,6 +120,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignContent: "center",
     overflow: "hidden",
+    marginBottom: 20,
   },
 
   imageContainer: {
@@ -123,9 +144,11 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
-  textContainer: {},
+  textContainer: {
+    minHeight: 80,
+  },
 
   title: {
     fontWeight: "bold",
@@ -135,8 +158,8 @@ const styles = StyleSheet.create({
 
   description: {
     fontWeight: "medium",
-    lineHeight: 20,
-    paddingBottom: 20,
+    lineHeight: 14,
+    paddingBottom: 5,
   },
 
   actionsContainer: {
@@ -151,7 +174,10 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     gap: 10,
+    zIndex: 10,
   },
 
-  actionButton: {},
+  actionButton: {
+    padding: 4,
+  },
 });

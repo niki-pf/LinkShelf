@@ -93,3 +93,35 @@ export async function saveLink(url: string): Promise<LinkItem | null> {
     return null;
   }
 }
+
+// hämtar alla läknar från db fär inloggad användare
+export async function getLinks(): Promise<LinkItem[]> {
+  try {
+    const { data, error } = await supabase
+      .from("links")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return data as LinkItem[];
+  } catch (e) {
+    console.error("error fetchin links", (e as Error).message);
+    return [];
+  }
+}
+
+// ta bort länk från db baserat på id.
+export async function deleteLink(linkId: string): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from("links")
+      .delete()
+      .match({ id: linkId });
+    if (error) throw error;
+
+    return true;
+  } catch (e) {
+    console.error("unable to delete link", (e as Error).message);
+    return false;
+  }
+}

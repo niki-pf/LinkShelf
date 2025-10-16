@@ -1,91 +1,97 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ActivityIndicator,
   FlatList,
+  Alert,
+  RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { supabase, LinkItem } from "@/lib/supabase";
+import { supabase, LinkItem, getLinks, deleteLink } from "@/lib/supabase";
 import { User } from "@supabase/supabase-js";
 import LinkCard from "@/components/LinkCard";
 
-const MOCK_LINKS: LinkItem[] = [
-  {
-    id: "mock-1",
-    user_id: "mock",
-    url: "https://svt.st/nyheter",
-    title: "SVt nyheter - Sveriges senaste",
-    description: "De senaste nyhterena blbalbalba",
-
-    image: "https://picsum.photos/400/500",
-    created_at: new Date().toISOString(),
-  },
-];
-
 export default function Dashboard() {
-  const [links, setLinks] = useState<LinkItem[]>(MOCK_LINKS as LinkItem[]);
+  const [links, setLinks] = useState<LinkItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(undefined as unknown as User);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // 1. Hämta inloggad användare
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
+  // 1 funciton för att hämta länkar
+  const fetchLinks = useCallback(async () => {
+    setRefreshing(true);
 
-      if (user !== undefined) {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  // 2. funciton för att hämta länkar
-  const fetchLinks = async () => {
-    if (!user) return; // Gör inget om user inte är inloggad
-
-    setLoading(true);
+    const fetchedLinks = await getLinks();
+    setLinks(fetchedLinks);
 
     setLoading(false);
-  };
+    setRefreshing(false);
+  }, []);
 
   useEffect(() => {
-    if (user !== undefined) {
-      fetchLinks();
-    }
-  }, [user]);
+    fetchLinks();
+  }, [fetchLinks]);
+
+  //2 radera länk
+
+  const handleDelete = (linkId: string) => {
+    Alert.alert(
+      "Bekräfta radering",
+      "Är du säkr på att du vill ta bort denna länk?",
+      [
+        {
+          text: "Avbryt",
+          style: "cancel",
+        },
+        {
+          text: "ta bort",
+          onPress: async () => {
+            const success = await deleteLink(linkId);
+
+            if (success) {
+              setLinks((prev) => prev.filter((link) => link.id !== linkId));
+            } else {
+              Alert.alert("Fel", "Kunde ej ta bort, försök igne");
+            }
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
+
+  //sign out ???
+
+  // rendera content
 
   const renderContent = () => {
-    if (loading || user === undefined) {
+    if (loading) {
       return (
         <View style={styles.centered}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
-          <Text style={styles.loadingText}>Laddar...</Text>
+          <ActivityIndicator size="large" color="#ffffff" />
+          <Text style={styles.loadingText}> Laddar länkar...</Text>
         </View>
       );
     }
-
-    if (!user) {
-      return <Text style={styles.errorText}>Vänligen logga in igen.</Text>;
-    }
-    const displayLinks = links.length === 0 ? MOCK_LINKS : links;
-    if (displayLinks.length === 0) {
+    if (links.length === 0 && !refreshing) {
       return (
-        <Text style={styles.emptyText}>
-          Din lista är tom! Börja spara länkar genom att trycka på "lägg till"
-        </Text>
+        <View style={styles.centered}>
+          <Text style={styles.emptyText}>
+            {" "}
+            Inga sparade länkar ännu. Lägg till en!
+          </Text>
+        </View>
       );
     }
 
     return (
       <FlatList
-        data={displayLinks}
+        data={links}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <LinkCard link={item} />}
+        renderItem={({ item }) => (
+          <LinkCard link={item} onDelete={handleDelete} />
+        )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
@@ -101,15 +107,13 @@ export default function Dashboard() {
       <View style={styles.contentArea}>
         <Text style={styles.headerText}>Dashboard</Text>
         {/* <Text style={styles.subHeaderText}>
-          Välkommen tillbaka, {user ? user.email : "Användare"}!
-        </Text> */}
-
+        Välkommen tillbaka, {user ? user.email : "Användare"}!
+      </Text> */}
         {renderContent()}
       </View>
     </LinearGradient>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
