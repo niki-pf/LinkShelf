@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   RefreshControl,
+  ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase, LinkItem, getLinks, deleteLink } from "@/lib/supabase";
@@ -94,6 +95,9 @@ export default function Dashboard() {
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchLinks} />
+        }
       />
     );
   };
