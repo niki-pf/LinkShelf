@@ -1,7 +1,6 @@
 // Importera Supabase klient för att kommunicera med databasen
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-// Importera HTML-parsern (deno_dom) för att pålitligt läsa HTML
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.43/deno-dom-wasm.ts";
 
 // Initialisera Supabase-klienten med miljövariabler
@@ -9,17 +8,12 @@ const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// --- AGGRESSIV LOGGNING VID START ---
-console.log(
-  `booted (URL present: ${!!supabaseUrl}, Service Key present: ${!!supabaseKey})`
-);
-// -------------------------------------
-
 /**
  * Hjälpfunktion för att extrahera YouTube video ID och konstruera thumbnail-URL.
  * @param url Den inkommande URL:en.
  * @returns Video ID och den konstruerade thumbnail-URL:en.
  */
+
 function getYouTubeIdAndImage(url: string): {
   videoId: string | null;
   imageUrl: string | null;
@@ -122,7 +116,6 @@ Deno.serve(async (req) => {
             firstParagraphText = firstParagraphText.trim();
           }
         }
-        // ---------------------------------------------------
 
         // Fallback till standard <title>-taggen
         const htmlTitle = document?.querySelector("title")?.textContent;
@@ -134,7 +127,7 @@ Deno.serve(async (req) => {
         description =
           ogDescription || metaDescription || firstParagraphText || "";
 
-        // ENDAST uppdatera 'image' om vi INTE redan har en YouTube-bild (som är säkrare)
+        // ENDAST uppdatera 'image' om vi INTE redan har en YouTube-bild
         if (!youtubeData.imageUrl) {
           image = ogImage || "";
         }
@@ -152,7 +145,8 @@ Deno.serve(async (req) => {
       description,
       image,
       inputUrl,
-    }); // 3. SPARA DATA I DATABASEN (Med Service Role Key)
+    });
+    // 3. SPARA DATA I DATABASEN (Med Service Role Key)
 
     // Vi kommer hit även om skrapningen misslyckades i steg 2, vilket förhindrar krasch på 429.
     const { data: insertedData, error: insertError } = await supabase
