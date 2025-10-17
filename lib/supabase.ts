@@ -1,13 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 import * as SecureStore from "expo-secure-store";
 
-// *************************************************************
 // FIX: Hårdkodade publika nycklar för att undvika Metro Caching Bug.
 // Dessa nycklar är offentliga och säkra att ha här
 const SUPABASE_URL = "https://idxgcjvcdsxkinxixuoh.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeGdjanZjZHN4a2lueGl4dW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3NTc0NDIsImV4cCI6MjA3NTMzMzQ0Mn0.S1zY63OkiA9dy6_rL6HO88FWcJ34Ah7Loe--zMjlZYw";
-// *************************************************************
 
 // --- EXPO SecureStore Storage Adapter (Måste finnas för Supabase Auth) ---
 // Supabase-klienten behöver ett sätt att spara tokens säkert, vilket
@@ -23,10 +21,9 @@ const ExpoSecureStoreAdapter = {
     SecureStore.deleteItemAsync(key);
   },
 };
-// --------------------------------------------------------------------------
 
 // 3. Skapa och exportera Supabase-klienten
-// Klienten initialiseras direkt med de hårdkodade, garanterade nycklarna.
+// Klienten initialiseras direkt med de hårdkodade nycklarna.
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: ExpoSecureStoreAdapter as any, // Använd vår SecureStore adapter
@@ -46,6 +43,11 @@ export interface LinkItem {
   image: string | null;
   created_at: string;
 }
+
+// export interface Category {
+//   id: string;
+//   title: string;
+// }
 
 // --- CLIENT-SIDE API FUNKTIONER ---
 
