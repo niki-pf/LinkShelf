@@ -11,13 +11,19 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase, LinkItem, getLinks, deleteLink } from "@/lib/supabase";
-import { User } from "@supabase/supabase-js";
+// import { User } from "@supabase/supabase-js";
 import LinkCard from "@/components/LinkCard";
+import SaveLinkInput from "@/components/SaveLinkInput";
 
 export default function Dashboard() {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); //pull to refres
+
+  //lägga till ny länk i listan
+  const handleLinkSaved = (newLink: LinkItem) => {
+    setLinks((prev) => [newLink, ...prev]);
+  };
 
   // 1 funciton för att hämta länkar
   const fetchLinks = useCallback(async () => {
@@ -113,6 +119,7 @@ export default function Dashboard() {
         {/* <Text style={styles.subHeaderText}>
         Välkommen tillbaka, {user ? user.email : "Användare"}!
       </Text> */}
+        <SaveLinkInput onLinkSaved={handleLinkSaved} />
         {renderContent()}
       </View>
     </LinearGradient>

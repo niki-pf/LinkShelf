@@ -1,6 +1,7 @@
 // Importera Supabase klient för att kommunicera med databasen
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
+// Importera HTML-parsern (deno_dom) för att pålitligt läsa HTML
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.43/deno-dom-wasm.ts";
 
 // Initialisera Supabase-klienten med miljövariabler
@@ -8,12 +9,17 @@ const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// --- AGGRESSIV LOGGNING VID START ---
+console.log(
+  `booted (URL present: ${!!supabaseUrl}, Service Key present: ${!!supabaseKey})`
+);
+// -------------------------------------
+
 /**
  * Hjälpfunktion för att extrahera YouTube video ID och konstruera thumbnail-URL.
  * @param url Den inkommande URL:en.
  * @returns Video ID och den konstruerade thumbnail-URL:en.
  */
-
 function getYouTubeIdAndImage(url: string): {
   videoId: string | null;
   imageUrl: string | null;
@@ -44,10 +50,37 @@ function getYouTubeIdAndImage(url: string): {
 
 // Huvudfunktionen som hanterar inkommande HTTP-anrop (POST)
 Deno.serve(async (req) => {
-  // Använd giltig placeholder UUID
-  const user_id = "00000000-0000-0000-0000-000000000001";
+  // --- FIX FÖR RLS: HÄMTA DET RIKTIGA USER ID:T FRÅN JWT ---
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response(
+      JSON.stringify({ error: "Authorization header saknas" }),
+      { status: 401 }
+    );
+  }
+  const jwt = authHeader.split(" ")[1];
+
+  // Få användaren från JWT (med Service Role Key)
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser(jwt);
+
+  if (userError || !user) {
+    // Returnera 401 om token är ogiltig eller utgången
+    return new Response(
+      JSON.stringify({ error: "Ogiltig eller utgången JWT. Logga in igen." }),
+      { status: 401 }
+    );
+  }
+
+  const user_id = user.id; // ANVÄND RIKTIGT ANVÄNDAR-ID
+  // --- SLUT PÅ USER ID FIX ---
 
   let inputUrl = "";
+  // KATEGORI KOMMENTAR: Variabeln category_id har tagits bort för att fokusera på
+  // huvudfunktionaliteten innan deadline. Koden för att hämta category_id
+  // från request body fanns här.
 
   // Variabler för metadata, initialiseras här för att kunna användas även om skrapningen misslyckas.
   let title: string;
@@ -57,6 +90,8 @@ Deno.serve(async (req) => {
   try {
     const body = await req.json();
     inputUrl = body.url;
+    // KATEGORI KOMMENTAR: Koden för att hämta category_id från request body fanns här:
+    // const category_id = body.category_id || null;
     title = inputUrl; // Fallback title är alltid URL:en
 
     if (!inputUrl) {
@@ -69,13 +104,10 @@ Deno.serve(async (req) => {
     // Sätt YouTube-bilden omedelbart som bästa fallback om den hittas
     image = youtubeData.imageUrl || ""; // --- 2. FÖRSÖK ATT SKRAPA METADATA ---
 
-    // Vi lägger fetch/parsing i en egen try/catch för att hantera 429-fel (rate limit)
-    // utan att krascha funktionen helt, vilket gör att vi fortfarande kan spara länken.
     try {
       const response = await fetch(inputUrl);
 
       if (!response.ok) {
-        // Logga rate limit (429) eller andra fel, men låt funktionen fortsätta till DB-insättning.
         console.warn(
           `Scraping attempt failed for ${inputUrl} with status: ${response.status}. Using fallback data.`
         );
@@ -116,6 +148,7 @@ Deno.serve(async (req) => {
             firstParagraphText = firstParagraphText.trim();
           }
         }
+        // ---------------------------------------------------
 
         // Fallback till standard <title>-taggen
         const htmlTitle = document?.querySelector("title")?.textContent;
@@ -127,7 +160,7 @@ Deno.serve(async (req) => {
         description =
           ogDescription || metaDescription || firstParagraphText || "";
 
-        // ENDAST uppdatera 'image' om vi INTE redan har en YouTube-bild
+        // ENDAST uppdatera 'image' om vi INTE redan har en YouTube-bild (som är säkrare)
         if (!youtubeData.imageUrl) {
           image = ogImage || "";
         }
@@ -145,10 +178,9 @@ Deno.serve(async (req) => {
       description,
       image,
       inputUrl,
-    });
-    // 3. SPARA DATA I DATABASEN (Med Service Role Key)
+      user_id,
+    }); // 3. SPARA DATA I DATABASEN
 
-    // Vi kommer hit även om skrapningen misslyckades i steg 2, vilket förhindrar krasch på 429.
     const { data: insertedData, error: insertError } = await supabase
       .from("links")
       .insert([
@@ -158,6 +190,8 @@ Deno.serve(async (req) => {
           title,
           description,
           image,
+          // KATEGORI KOMMENTAR: category_id togs bort härifrån i sista minuten
+          // för att lämna in projektet i tid. Detta är en framtida feature.
         },
       ])
       .select();
