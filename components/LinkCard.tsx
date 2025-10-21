@@ -19,11 +19,11 @@ interface LinkCardProps {
 }
 
 //placeholder bild
-const placeholderImage =
-  "https://placehold.co/400x150/D1D5DB/4B5563?text=BILD+SAKNAS";
+const ICON_SIZE = 40;
 
 export default function LinkCard({ link, onDelete }: LinkCardProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [hasImageError, setHasImageError] = useState(false);
 
   const handleOpenLink = async () => {
     // provar expo-web-brower , som stabilare lösning
@@ -41,30 +41,42 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
     onDelete(link.id);
   };
 
-  const displayImage = link.image || placeholderImage;
+  const displayImageUrl =
+    link.image || (link.image && !hasImageError) ? link.image : undefined;
   const displayTitle = link.title || link.url;
   const displayDescription = link.description || "Ingen beskrivning tillgänlig";
 
+  const handleImageError = () => {
+    setIsImageLoading(false);
+    setHasImageError(true);
+  };
   return (
     <TouchableOpacity style={styles.card} onPress={handleOpenLink}>
       {/* ÖVERSTA HALVAN - BILD */}
       <View style={styles.imageContainer}>
-        {isImageLoading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="small" color="#4b5563" />
+        {displayImageUrl ? (
+          <>
+            {isImageLoading && (
+              <View style={styles.loadingOverlay}>
+                <ActivityIndicator size="small" color="#4b5563" />
+              </View>
+            )}
+            <Image
+              source={{ uri: displayImageUrl }}
+              style={[styles.image, isImageLoading && { opacity: 0.1 }]}
+              resizeMode="cover"
+              onLoad={() => setIsImageLoading(false)}
+              onError={handleImageError}
+            />
+          </>
+        ) : (
+          <View style={styles.fallbackContainer}>
+            <Feather name="globe" size={ICON_SIZE} color="#888" />
+            <Text style={styles.fallbackText}>Ingen bild</Text>
           </View>
         )}
-        <Image
-          source={{ uri: displayImage }}
-          style={[styles.image, isImageLoading && { opacity: 0.1 }]}
-          resizeMode="cover"
-          onLoad={() => setIsImageLoading(false)}
-          onError={({ nativeEvent: { error } }) => {
-            setIsImageLoading(false);
-          }}
-        />
       </View>
-      {/* UNDRE HALVAN - TEXT CONTENT / action knappar  */}
+      ){/* UNDRE HALVAN - TEXT CONTENT / action knappar  */}
       <View style={styles.contentContainer}>
         {/* TITEL OCH BESKRIVNING */}
         <View style={styles.textContainer}>
@@ -140,6 +152,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
+    zIndex: 1,
   },
 
   contentContainer: {
@@ -179,5 +192,17 @@ const styles = StyleSheet.create({
 
   actionButton: {
     padding: 4,
+  },
+
+  fallbackContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  fallbackText: {
+    marginTop: 5,
+    fontSize: 12,
+    color: "#6B7280",
   },
 });
