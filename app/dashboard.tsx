@@ -8,12 +8,14 @@ import {
   Alert,
   RefreshControl,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase, LinkItem, getLinks, deleteLink } from "@/lib/supabase";
 // import { User } from "@supabase/supabase-js";
 import LinkCard from "@/components/LinkCard";
 import SaveLinkInput from "@/components/SaveLinkInput";
+import { Feather } from "@expo/vector-icons";
 
 export default function Dashboard() {
   const [links, setLinks] = useState<LinkItem[]>([]);
@@ -68,7 +70,15 @@ export default function Dashboard() {
     );
   };
 
-  //sign out ???
+  //sign out
+  const handleSignout = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      Alert.alert("Fel vid utloggning", error.message);
+    }
+    setLoading(false);
+  };
 
   // rendera content
 
@@ -115,10 +125,24 @@ export default function Dashboard() {
       style={styles.container}
     >
       <View style={styles.contentArea}>
-        <Text style={styles.headerText}>Dashboard</Text>
-        {/* <Text style={styles.subHeaderText}>
+        {/* header med logga ut knapp */}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>LinkShelf</Text>
+          <TouchableOpacity
+            onPress={handleSignout}
+            style={styles.signOutButton}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#ffffff" size="small" />
+            ) : (
+              <Feather name="log-out" size={24} color="#FFFFFF" />
+            )}
+          </TouchableOpacity>
+          {/* <Text style={styles.subHeaderText}>
         Välkommen tillbaka, {user ? user.email : "Användare"}!
       </Text> */}
+        </View>
         <SaveLinkInput onLinkSaved={handleLinkSaved} />
         {renderContent()}
       </View>
@@ -133,7 +157,7 @@ const styles = StyleSheet.create({
   contentArea: {
     flex: 1,
     width: "100%",
-    paddingTop: 80,
+    paddingTop: 0,
     paddingHorizontal: 20,
   },
   headerText: {
@@ -176,5 +200,15 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 16,
     marginTop: 50,
+  },
+
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: 5,
+  },
+  signOutButton: {
+    padding: 5,
   },
 });
