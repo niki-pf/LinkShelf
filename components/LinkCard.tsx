@@ -16,12 +16,13 @@ import * as WebBrowser from "expo-web-browser";
 interface LinkCardProps {
   link: LinkItem;
   onDelete: (linkId: string) => void;
+  onEdit: (link: LinkItem) => void;
 }
 
 //placeholder bild
 const ICON_SIZE = 40;
 
-export default function LinkCard({ link, onDelete }: LinkCardProps) {
+export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [hasImageError, setHasImageError] = useState(false);
 
@@ -50,73 +51,81 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
     setIsImageLoading(false);
     setHasImageError(true);
   };
+
+  // const handleEditLink = (e: any) => {
+  //   e.stopPropagation();
+  //   onEdit(link);
+  // };
   return (
     <TouchableOpacity style={styles.card} onPress={handleOpenLink}>
-      {/* ÖVERSTA HALVAN - BILD */}
-      <View style={styles.imageContainer}>
-        {displayImageUrl ? (
-          <>
-            {isImageLoading && (
-              <View style={styles.loadingOverlay}>
-                <ActivityIndicator size="small" color="#4b5563" />
-              </View>
-            )}
-            <Image
-              source={{ uri: displayImageUrl }}
-              style={[styles.image, isImageLoading && { opacity: 0.1 }]}
-              resizeMode="cover"
-              onLoad={() => setIsImageLoading(false)}
-              onError={handleImageError}
-            />
-          </>
-        ) : (
-          <View style={styles.fallbackContainer}>
-            <Feather name="globe" size={ICON_SIZE} color="#888" />
-            <Text style={styles.fallbackText}>Ingen bild</Text>
-          </View>
-        )}
-      </View>
-      ){/* UNDRE HALVAN - TEXT CONTENT / action knappar  */}
-      <View style={styles.contentContainer}>
-        {/* TITEL OCH BESKRIVNING */}
-        <View style={styles.textContainer}>
-          <Text style={styles.title} numberOfLines={2}>
-            {displayTitle}
-          </Text>
-          <Text style={styles.description} numberOfLines={2}>
-            {displayDescription}
-          </Text>
+      <View style={styles.contentWrapper} pointerEvents="box-none">
+        {/* ÖVERSTA HALVAN - BILD */}
+        <View style={styles.imageContainer}>
+          {displayImageUrl ? (
+            <>
+              {isImageLoading && (
+                <View style={styles.loadingOverlay}>
+                  <ActivityIndicator size="small" color="#4b5563" />
+                </View>
+              )}
+              <Image
+                source={{ uri: displayImageUrl }}
+                style={[styles.image, isImageLoading && { opacity: 0.1 }]}
+                resizeMode="cover"
+                onLoad={() => setIsImageLoading(false)}
+                onError={handleImageError}
+              />
+            </>
+          ) : (
+            <View style={styles.fallbackContainer}>
+              <Feather name="globe" size={ICON_SIZE} color="#888" />
+              <Text style={styles.fallbackText}>Ingen bild</Text>
+            </View>
+          )}
         </View>
-
-        {/* ACTIONS container/ KNAPPAR */}
-        <View style={styles.actionsContainer}>
-          {/* url */}
-          <View style={styles.urlContainer}>
-            <Feather name="link" size={12} color={"black"} />
-            <Text style={styles.urlContainer} numberOfLines={1}>
-              {getDomain(link.url)}
+        {/* UNDRE HALVAN - TEXT CONTENT / action knappar  */}
+        <View style={styles.contentContainer}>
+          {/* TITEL OCH BESKRIVNING */}
+          <View style={styles.textContainer}>
+            <Text style={styles.title} numberOfLines={2}>
+              {displayTitle}
+            </Text>
+            <Text style={styles.description} numberOfLines={2}>
+              {displayDescription}
             </Text>
           </View>
-          {/* KNAPP SEKTION */}
-          <View style={styles.buttonsContainer}>
-            {/* öppna länk */}
-            <TouchableOpacity
-              style={styles.actionButton}
-              // onPress={handleEditLink} behöver implementeras
-              activeOpacity={0.7}
-            />
-            <Feather name="edit-3" size={20} color="#1A2980" />
-            {/* ta bort  länk */}
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={(e) => {
-                e.stopPropagation();
-                handleDeleteLink();
-              }}
-              activeOpacity={0.7}
-            >
-              <AntDesign name="delete" size={20} color={"#EF4444"} />
-            </TouchableOpacity>
+
+          {/* ACTIONS container/ KNAPPAR */}
+          <View style={styles.actionsContainer}>
+            {/* url */}
+            <View style={styles.urlContainer}>
+              <Feather name="link" size={12} color={"black"} />
+              <Text style={styles.urlText} numberOfLines={1}>
+                {getDomain(link.url)}
+              </Text>
+            </View>
+            {/* KNAPP SEKTION */}
+            <View style={styles.buttonsContainer}>
+              {/* öppna länk */}
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => {
+                  // e.stopPropagation();
+                  onEdit(link);
+                }}
+                activeOpacity={0.7}
+              >
+                <Feather name="edit-3" size={20} color="#1A2980" />
+              </TouchableOpacity>
+              {/* ta bort  länk */}
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={handleDeleteLink}
+                activeOpacity={0.7}
+              >
+                <AntDesign name="delete" size={20} color={"#EF4444"} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -191,7 +200,7 @@ const styles = StyleSheet.create({
   },
 
   actionButton: {
-    padding: 4,
+    padding: 8,
   },
 
   fallbackContainer: {
@@ -204,5 +213,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 12,
     color: "#6B7280",
+  },
+  urlText: {
+    color: "#fafafa",
   },
 });

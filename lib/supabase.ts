@@ -127,3 +127,26 @@ export async function deleteLink(linkId: string): Promise<boolean> {
     return false;
   }
 }
+
+//redigera länk
+
+export async function updateLink(
+  linkId: string,
+  newTitle: string,
+  newDescription: string
+): Promise<boolean> {
+  const { error } = await supabase
+    .from("links")
+    .update({
+      title: newTitle,
+      description: newDescription,
+      // updated_at: new Date(),
+    })
+    .eq("id", linkId);
+
+  if (error) {
+    console.error("Error updating link", error);
+    return false;
+  }
+  return true;
+}
