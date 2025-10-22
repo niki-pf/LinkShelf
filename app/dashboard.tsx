@@ -7,7 +7,6 @@ import {
   FlatList,
   Alert,
   RefreshControl,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,11 +15,15 @@ import { supabase, LinkItem, getLinks, deleteLink } from "@/lib/supabase";
 import LinkCard from "@/components/LinkCard";
 import SaveLinkInput from "@/components/SaveLinkInput";
 import { Feather } from "@expo/vector-icons";
+import EditModal from "@/components/EditModal";
 
 export default function Dashboard() {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false); //pull to refres
+  //redigera länk
+  const [editingLink, setEditingLink] = useState<LinkItem | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   //lägga till ny länk i listan
   const handleLinkSaved = (newLink: LinkItem) => {
@@ -80,6 +83,26 @@ export default function Dashboard() {
     setLoading(false);
   };
 
+  //redigera länk
+  const startEdit = (link: LinkItem) => {
+    setEditingLink(link);
+    setIsModalVisible(true);
+  };
+
+  //hantera uppdatering av länk
+  const handleLinkUpdated = (updatedLink: LinkItem) => {
+    setLinks((prev) =>
+      prev.map((link) => (link.id === updatedLink.id ? updatedLink : link))
+    );
+    setIsModalVisible(false);
+    setEditingLink(null);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+    setEditingLink(null);
+  };
+
   // rendera content
 
   const renderContent = () => {
@@ -95,19 +118,17 @@ export default function Dashboard() {
       return (
         <View style={styles.centered}>
           <Text style={styles.emptyText}>
-            {" "}
             Inga sparade länkar ännu. Lägg till en!
           </Text>
         </View>
       );
     }
-
     return (
       <FlatList
         data={links}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <LinkCard link={item} onDelete={handleDelete} />
+          <LinkCard link={item} onDelete={handleDelete} onEdit={startEdit} />
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
@@ -146,6 +167,14 @@ export default function Dashboard() {
         <SaveLinkInput onLinkSaved={handleLinkSaved} />
         {renderContent()}
       </View>
+      {editingLink && (
+        <EditModal
+          isVisible={isModalVisible}
+          link={editingLink}
+          onClose={closeModal}
+          onUpdate={handleLinkUpdated}
+        />
+      )}
     </LinearGradient>
   );
 }
