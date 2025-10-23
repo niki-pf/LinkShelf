@@ -42,6 +42,16 @@ function getYouTubeIdAndImage(url: string): {
       const imageUrl = `https://img.youtube.com/vi/${shortId}/hqdefault.jpg`;
       return { videoId: shortId, imageUrl };
     }
+
+    //3. hantera youtube shorts
+    if (urlObj.pathname.startsWith("/shorts")) {
+      const parts = urlObj.pathname.split("/");
+      const shortId = parts[2];
+      if (shortId) {
+        const imageUrl = `https://img.youtube.com/vi/${shortId}/hqdefault.jpg`;
+        return { videoId: shortId, imageUrl };
+      }
+    }
   } catch (e) {
     // Ignorera fel, returnera null om URL:en är ogiltig
   }
@@ -78,11 +88,12 @@ Deno.serve(async (req) => {
   // --- SLUT PÅ USER ID FIX ---
 
   let inputUrl = "";
-  // KATEGORI KOMMENTAR: Variabeln category_id har tagits bort för att fokusera på
+  // KATEGORI KOMMENTAR: Variabeln category_id har tagits bort för aatt fokusera på
   // huvudfunktionaliteten innan deadline. Koden för att hämta category_id
   // från request body fanns här.
 
   // Variabler för metadata, initialiseras här för att kunna användas även om skrapningen misslyckas.
+
   let title: string;
   let description: string = "";
   let image: string = "";
@@ -171,6 +182,15 @@ Deno.serve(async (req) => {
         (e as Error).message
       );
       // title, description, and image behåller sina initiala/fallback-värden.
+    }
+    if (youtubeData.videoId) {
+      if (
+        !description ||
+        description.length < 15 ||
+        description.toLowerCase().includes("auf youtube findest du")
+      ) {
+        description = "En YouTube video. Öppna länken för att titta.";
+      }
     }
 
     console.log("Final Scraped Metadata:", {
