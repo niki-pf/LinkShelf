@@ -16,9 +16,11 @@ import LinkCard from "@/components/LinkCard";
 import SaveLinkInput from "@/components/SaveLinkInput";
 import { Feather } from "@expo/vector-icons";
 import EditModal from "@/components/EditModal";
+import { useRouter } from "expo-router";
 
 export default function Dashboard() {
   const [links, setLinks] = useState<LinkItem[]>([]);
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false); //pull to refres
   //redigera länk
@@ -77,10 +79,12 @@ export default function Dashboard() {
   const handleSignout = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
+    setLoading(false);
     if (error) {
       Alert.alert("Fel vid utloggning", error.message);
+      return;
     }
-    setLoading(false);
+    router.replace("/");
   };
 
   //redigera länk
