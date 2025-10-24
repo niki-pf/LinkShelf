@@ -32,13 +32,33 @@ export default function Dashboard() {
     setLinks((prev) => [newLink, ...prev]);
   };
 
+  // !!---- flyttar ut till Search sida -----!!
   // 1 funciton för att hämta länkar
+  // const fetchLinks = useCallback(async () => {
+  //   setRefreshing(true);
+
+  //   const fetchedLinks = await getLinks();
+  //   setLinks(fetchedLinks);
+
+  //   setLoading(false);
+  //   setRefreshing(false);
+  // }, []);
+
+  // useEffect(() => {
+  //   fetchLinks();
+  // }, [fetchLinks]);
+
+  //2 radera länk
+
+  //hämta senast sparade länkar
   const fetchLinks = useCallback(async () => {
     setRefreshing(true);
-
-    const fetchedLinks = await getLinks();
-    setLinks(fetchedLinks);
-
+    const { data, error } = await supabase
+      .from("links")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(8);
+    if (!error && data) setLinks(data);
     setLoading(false);
     setRefreshing(false);
   }, []);
@@ -46,8 +66,6 @@ export default function Dashboard() {
   useEffect(() => {
     fetchLinks();
   }, [fetchLinks]);
-
-  //2 radera länk
 
   const handleDelete = (linkId: string) => {
     Alert.alert(
@@ -169,6 +187,12 @@ export default function Dashboard() {
       </Text> */}
         </View>
         <SaveLinkInput onLinkSaved={handleLinkSaved} />
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}> Senast sparade</Text>
+          <TouchableOpacity onPress={() => router.push("/search")}>
+            <Text style={styles.seAllText}> Se alla →</Text>
+          </TouchableOpacity>
+        </View>
         {renderContent()}
       </View>
       {editingLink && (
@@ -243,5 +267,21 @@ const styles = StyleSheet.create({
   },
   signOutButton: {
     padding: 5,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  sectionTitle: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  seAllText: {
+    color: "rgba(255,255,255,0.8)",
+    fontSize: 14,
   },
 });
