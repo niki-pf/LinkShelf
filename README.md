@@ -53,5 +53,5 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 - [Edge Functions](https://supabase.com/docs/guides/functions)
 
 ### Emulator, Utecklingsmiljö
--[Expo](https://docs.expo.dev/)
--[Android Studio](https://developer.android.com/studio)
+- [Expo](https://docs.expo.dev/)
+- [Android Studio](https://developer.android.com/studio)
