@@ -94,10 +94,10 @@ Starta Android Studio eller iOS Simulator.
 
 ⚠️ **Tips / krav**
 
-Node.js version 16 eller högre
+**Node.js version 16** eller högre
 
-Expo Go app på mobil om du inte använder simulator
+**Expo Go app** på mobil om du inte använder simulator
 
-Android Studio eller Xcode för att köra emulator
+**Android Studio** eller **Xcode** för att köra emulator
 
 ---
