@@ -7,9 +7,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  //   KeyboardAvoidingView,  implementera????
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+  ScrollView,
 } from "react-native";
 import { LinkItem, updateLink } from "@/lib/supabase";
+import { dismiss } from "expo-router/build/global-state/routing";
 
 interface EditModalProps {
   isVisible: boolean;
@@ -61,50 +66,62 @@ export default function EditModal({
   //         </View>
   return (
     <Modal visible={isVisible} animationType="slide" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}> Redigera länk</Text>
-          <Text style={styles.label}>Titel</Text>
-          <TextInput
-            style={styles.input}
-            value={title}
-            onChangeText={setTitle}
-            placeholder="Titel"
-            placeholderTextColor={"#fafafa"}
-          />
-          <Text style={styles.label}>Beskrivning</Text>
-          <TextInput
-            style={[styles.input, styles.textArea]}
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Beskrivning"
-            placeholderTextColor={"#fafafa"}
-            multiline
-          />
-          {error && <Text style={styles.errorText}>{error}</Text>}
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={[styles.button, styles.cancelButton]}
-              onPress={onClose}
-              disabled={loading}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.overlay}>
+          <KeyboardAvoidingView
+            style={styles.modalWrapper}
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+          >
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
             >
-              <Text style={styles.buttonText}>Avbryt</Text>
-            </TouchableOpacity>
+              <View style={styles.modalContainer}>
+                <Text style={styles.modalTitle}> Redigera länk</Text>
+                <Text style={styles.label}>Titel</Text>
+                <TextInput
+                  style={styles.input}
+                  value={title}
+                  onChangeText={setTitle}
+                  placeholder="Titel"
+                  placeholderTextColor={"#fafafa"}
+                />
+                <Text style={styles.label}>Beskrivning</Text>
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  value={description}
+                  onChangeText={setDescription}
+                  placeholder="Beskrivning"
+                  placeholderTextColor={"#fafafa"}
+                  multiline
+                />
+                {error && <Text style={styles.errorText}>{error}</Text>}
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.cancelButton]}
+                    onPress={onClose}
+                    disabled={loading}
+                  >
+                    <Text style={styles.buttonText}>Avbryt</Text>
+                  </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.button, styles.saveButton]}
-              onPress={handleSave}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.buttonText}>Spara</Text>
-              )}
-            </TouchableOpacity>
-          </View>
+                  <TouchableOpacity
+                    style={[styles.button, styles.saveButton]}
+                    onPress={handleSave}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <ActivityIndicator color="#fff" />
+                    ) : (
+                      <Text style={styles.buttonText}>Spara</Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -112,16 +129,16 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
-    paddingTop: 80,
+    paddingHorizontal: 10,
   },
   modalContainer: {
     minWidth: "90%",
     backgroundColor: "#fff",
     borderRadius: 15,
     padding: 20,
-    maxHeight: "50%",
+    // maxHeight: "50%",
     elevation: 6,
   },
   modalTitle: {
@@ -177,5 +194,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     fontSize: 16,
+  },
+  modalWrapper: {
+    width: "100%",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, View, Platform, ScrollView } from "react-native";
 import Auth from "../components/Auth";
 import { supabase } from "../lib/supabase";
 import { Session } from "@supabase/supabase-js";
@@ -42,9 +42,24 @@ export default function Index() {
   // Om vi INTE har session, visa Auth
   if (!session) {
     return (
-      <View style={{ flex: 1 }}>
-        <Auth />
-      </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            paddingBottom: 80,
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={{ flex: 1 }}>
+            <Auth />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 

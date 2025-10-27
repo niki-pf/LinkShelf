@@ -82,14 +82,14 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
           )}
         </View>
 
-        <View style={styles.textContainer}>
+        <View style={styles.textContainer} pointerEvents="box-none">
           <Text style={styles.title} numberOfLines={2}>
             {displayTitle}
           </Text>
           <Text style={styles.description} numberOfLines={1}>
             {displayDescription}
           </Text>
-          <View style={styles.buttonsContainer}>
+          <View style={styles.buttonsContainer} pointerEvents="box-none">
             <View style={styles.urlContainer}>
               <Feather name="link" size={12} color={"black"} />
               <Text style={styles.urlText} numberOfLines={1}>
