@@ -161,6 +161,6 @@ Starta Android Studio eller iOS Simulator.
 ---
 ## 📚 [Lärdomar](#-lärdomar)
 ---
-##📜 [Licens](#-licens)
+## 📜 [Licens](#-licens)
 ---
-##🚀 [Utvecklingsmöjligheter](#-utvecklingsmöjligheter)
+## 🚀 [Utvecklingsmöjligheter](#-utvecklingsmöjligheter)
