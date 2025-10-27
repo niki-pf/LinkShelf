@@ -33,3 +33,8 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 
 ---
 ## Funktioner
+
+- Spara länkar
+- Redigera titlar för att göra dem mer beskrivande
+- Sökfunktion för att hitta specifika länkar
+- Ta bort länkar
