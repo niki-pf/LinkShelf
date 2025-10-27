@@ -23,12 +23,10 @@ En mobilapp utvecklad i **React Native (Expo)** och **Supabase**. Appens syfte �
 
 ## 📖 Om projektet
 
-LinkShelf är en modern, minimalistisk mobil-först applikation designad för att spara och organisera webblänkar effektivt. Målet var att skapa en fullstack-lösning med fokus på prestanda genom att flytta tung logik till servern.
-Detta är ett individuellt projekt där målet var att bygga en minimalistisk och säker fullstack-applikation. Syftet är att träna på:
+Idén till appen kom från mitt eget behov: jag sparar ofta länkar i en WhatsApp-chatt med mig själv, men det blir snabbt svårt att söka efter dem. Med LinkShelf kan man spara länkar, redigera titlar och söka bland dem. I framtiden planerar jag även att lägga till kategorier för att organisera länkarna bättre.
 
--- Fullstack-utveckling: Koppling mellan klient (React Native/Expo) och server (Supabase).
--- Serverless-arkitektur: Användning av Supabase Edge Functions (Deno).
--- Säkerhet och Autentisering: Säkra API-anrop med JWT-validering på servern.
--- Asynkrona Nätverksoperationer: Hantera fetch och HTML-parsing (skrapning) utan att blockera klienten.
+Appen är byggd i **React Native**, **TypeScript** och använder **Supabase** som databas. **Edge Functions** används för att hämta **metadata** från länkar automatiskt.
 
----
+#V arför inte regex?
+
+Till en början funderade jag på att enbart använda regex för att extrahera information från länkar. Men vissa sidor, som YouTube, går inte att skrapa på ett enkelt sätt med regex, vilket ledde till att jag valde Edge Functions. I praktiken gick det ändå inte att hämta all metadata med enbart Edge Functions – för fullständig data hade man behövt ytterligare logik utanför min nuvarande kunskap. Regex hade kanske räckt för enklare sidor, men Edge Functions gör lösningen mer flexibel och robust för mer komplexa eller dynamiska sidor.
