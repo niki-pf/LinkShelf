@@ -91,4 +91,12 @@ Scanna QR-koden som visas i terminalen eller webbläsaren.
 Starta Android Studio eller iOS Simulator.
 
 **Välj "Run on emulator" i Expo.**
+
+⚠️ **Tips / krav**
+
+Node.js version 16 eller högre
+
+Expo Go app på mobil om du inte använder simulator
+
+Android Studio eller Xcode för att köra emulator
 ---
