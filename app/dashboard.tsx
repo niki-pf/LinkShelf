@@ -16,7 +16,7 @@ import LinkCard from "@/components/LinkCard";
 import SaveLinkInput from "@/components/SaveLinkInput";
 import { Feather } from "@expo/vector-icons";
 import EditModal from "@/components/EditModal";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 
 export default function Dashboard() {
   const [links, setLinks] = useState<LinkItem[]>([]);
@@ -66,6 +66,13 @@ export default function Dashboard() {
   useEffect(() => {
     fetchLinks();
   }, [fetchLinks]);
+
+  // uppdatera dashboard när man raderat/ändrat länk i Search vyn
+  useFocusEffect(
+    useCallback(() => {
+      fetchLinks();
+    }, [fetchLinks])
+  );
 
   const handleDelete = (linkId: string) => {
     Alert.alert(
@@ -176,6 +183,7 @@ export default function Dashboard() {
             style={styles.signOutButton}
             disabled={loading}
           >
+            {/* <Text style={{ color: "white" }}>Logga ut</Text> */}
             {loading ? (
               <ActivityIndicator color="#ffffff" size="small" />
             ) : (
