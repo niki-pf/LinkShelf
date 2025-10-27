@@ -44,3 +44,14 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 ---
 
 ## Teknologier
+
+### Frontend:
+- [React Native] (https://reactnative.dev/)
+- [TypeScript] (https://www.typescriptlang.org/docs/)
+### Backend: 
+- [Supabase] (https://supabase.com/docs)
+- [Edge Functions](https://supabase.com/docs/guides/functions)
+
+### Emulator, Utecklingsmiljö
+-[Expo](https://docs.expo.dev/)
+-[Android Studio](https://developer.android.com/studio)
