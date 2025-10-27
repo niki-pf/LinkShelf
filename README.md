@@ -92,7 +92,8 @@ Starta Android Studio eller iOS Simulator.
 
 **Välj "Run on emulator" i Expo.**
 
-⚠️ **Tips / krav**
+
+### ⚠️ **Tips / krav**
 
 **Node.js version 16** eller högre
 
