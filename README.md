@@ -55,3 +55,22 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 ### Emulator, Utecklingsmiljö
 - [Expo](https://docs.expo.dev/)
 - [Android Studio](https://developer.android.com/studio)
+
+---
+
+## ⚙️ Installation
+```bash
+# Klona repo
+git clone https://github.com/ingakonstigheter/e-commerce-maison-nova
+
+# Gå in i projektmappen
+cd e-commerce-maison-nova
+
+# Installera beroenden
+npm install
+
+# Starta utvecklingsserver
+npm run dev
+```
+
+---
