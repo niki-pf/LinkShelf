@@ -15,6 +15,7 @@ import { getLinks, LinkItem, deleteLink } from "@/lib/supabase";
 import LinkCard from "@/components/LinkCard";
 import SearchBar from "@/components/SearchBar";
 import { useRouter } from "expo-router";
+import EditModal from "@/components/EditModal";
 
 export default function SearchScreen() {
   const [allLinks, setAllLinks] = useState<LinkItem[]>([]);
@@ -23,6 +24,8 @@ export default function SearchScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
+  const [selectedLink, setSelectedLink] = useState<LinkItem | null>(null);
+  const [isEditVisible, setIsEditVisible] = useState(false);
 
   //hämta alla länkar
   const fetchLinks = useCallback(async () => {
@@ -80,6 +83,11 @@ export default function SearchScreen() {
     // setFilteredLinks((prev) => prev.filter((l) => l.id !== linkId));
   };
 
+  const handleEdit = (link: LinkItem) => {
+    setSelectedLink(link);
+    setIsEditVisible(true);
+  };
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -102,7 +110,11 @@ export default function SearchScreen() {
         data={filteredLinks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <LinkCard link={item} onDelete={handleDelete} onEdit={() => {}} />
+          <LinkCard
+            link={item}
+            onDelete={handleDelete}
+            onEdit={() => handleEdit(item)}
+          />
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
@@ -144,6 +156,22 @@ export default function SearchScreen() {
           {renderContent()}
         </View>
       </View>
+      {selectedLink && (
+        <EditModal
+          isVisible={isEditVisible}
+          link={selectedLink}
+          onClose={() => setIsEditVisible(false)}
+          onUpdate={(updated) => {
+            setAllLinks((prev) =>
+              prev.map((l) => (l.id === updated.id ? updated : l))
+            );
+            setFilteredLinks((prev) =>
+              prev.map((l) => (l.id === updated.id ? updated : l))
+            );
+            setIsEditVisible(false);
+          }}
+        />
+      )}
     </LinearGradient>
   );
 }
