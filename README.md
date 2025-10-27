@@ -61,9 +61,31 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 ## ⚙️ Installation
 Följ stegen nedan för att köra appen lokalt på din dator eller mobil.
 
-### 1. Klona repo
 ```bash
+# 1. Klona repo
 git clone https://github.com/niki-pf/LinkShelf
 
-### 2. Gå in i projektmappen
+# 2. Gå in i projektmappen
+cd LinkShelf
+
+#4. Installera Expo CLI (om du inte redan har det)
+npm install -g expo-cli
+
+#5. Starta utvecklingsserver
+expo start
+```
+
+### 6. Köra appen
+
+**På mobil:**
+
+Ladda ner Expo Go-appen från App Store eller Google Play.
+
+Scanna QR-koden som visas i terminalen eller webbläsaren.
+
+**På emulator:**
+
+Starta Android Studio eller iOS Simulator.
+
+**Välj "Run on emulator" i Expo.**
 ---
