@@ -105,7 +105,7 @@ Starta Android Studio eller iOS Simulator.
 
 ## 🚀 Användning
 
-### 1. Index / Inloggning / Registrering
+#### 1. Index / Inloggning / Registrering
 - **Registrera nytt konto:**  
   Ange e-postadress och lösenord, tryck på **Sign Up**.  
   Vänta på bekräftelsemejl och bekräfta länken i mejlet.  
@@ -114,7 +114,7 @@ Starta Android Studio eller iOS Simulator.
   Ange din e-postadress och lösenord, tryck på **Log In**.  
 
 
-### 2. Dashboard
+#### 2. Dashboard
 - **Senast sparade länkar:**  
   Här visas de senaste länkarna du sparat.  
 
@@ -136,7 +136,7 @@ Starta Android Studio eller iOS Simulator.
   Tryck på **Se alla →** för att komma till söksidan med alla sparade länkar.  
 
 
-### 3. Search-sidan (alla länkar)
+#### 3. Search-sidan (alla länkar)
 - **Sökfält:**  
   Skriv i fältet för att filtrera länkar, listan uppdateras direkt med matchningar.  
 
