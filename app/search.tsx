@@ -7,6 +7,7 @@ import {
   FlatList,
   RefreshControl,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
@@ -54,16 +55,37 @@ export default function SearchScreen() {
   }, [searchTerm, allLinks]);
 
   const handleDelete = async (linkId: string) => {
-    await deleteLink(linkId);
-    setAllLinks((prev) => prev.filter((l) => l.id !== linkId));
-    setFilteredLinks((prev) => prev.filter((l) => l.id !== linkId));
+    Alert.alert(
+      "Bekräfta radering",
+      "Är du säker på att du vill ta bort denna länk?",
+      [
+        { text: "Avbryt", style: "cancel" },
+        {
+          text: "Ta bort",
+          onPress: async () => {
+            const success = await deleteLink(linkId);
+            if (success) {
+              setAllLinks((prev) => prev.filter((l) => l.id !== linkId));
+              setFilteredLinks((prev) => prev.filter((l) => l.id !== linkId));
+            } else {
+              Alert.alert("Fel", "Kunde inte ta bort länken. Försök igen");
+            }
+          },
+          style: "destructive",
+        },
+      ]
+    );
+    // await deleteLink(linkId);
+    // setAllLinks((prev) => prev.filter((l) => l.id !== linkId));
+    // setFilteredLinks((prev) => prev.filter((l) => l.id !== linkId));
   };
+
   const renderContent = () => {
     if (loading) {
       return (
         <View style={styles.centered}>
           <ActivityIndicator size="large" color="#fff" />
-          <Text style={styles.loading}>Laddar länkar...</Text>
+          <Text style={styles.loadingText}>Laddar länkar...</Text>
         </View>
       );
     }
@@ -96,20 +118,31 @@ export default function SearchScreen() {
       end={{ x: 1, y: 1 }}
       style={styles.container}
     >
-      <View style={styles.container}>
-        <View style={styles.header}>
+      <View style={styles.contentWrapper}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View style={{ width: 24 }} />
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={{
+                alignSelf: "flex-end",
+                flexDirection: "row",
+              }}
+            >
+              <Text style={{ color: "white" }}>Tillbaka</Text>
+              {/* <Text style={styles.goBackText}> Tillbaka</Text> */}
+              <Feather name="arrow-left" size={24} color={"#fff"} />
+            </TouchableOpacity>
+          </View>
+
+          <SearchBar
+            value={searchTerm}
+            onChange={setSearchTerm}
+            onClear={() => setSearchTerm("")}
+          />
           <Text style={styles.headerText}> Alla länkar </Text>
-          <TouchableOpacity onPress={() => router.back()}>
-            {/* <Text style={styles.goBackText}> Tillbaka</Text> */}
-            <Feather name="arrow-left" size={24} color={"#fff"} />
-          </TouchableOpacity>
+          {renderContent()}
         </View>
-        <SearchBar
-          value={searchTerm}
-          onChange={setSearchTerm}
-          onClear={() => setSearchTerm("")}
-        />
-        {renderContent()}
       </View>
     </LinearGradient>
   );
@@ -126,9 +159,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   headerText: {
-    fontSize: 16,
+    fontSize: 20,
     color: "white",
-    fontWeight: "800",
+    fontWeight: "700",
     marginBottom: 15,
   },
   listContent: {
@@ -151,12 +184,18 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "space-between",
-    marginBottom: 15,
+    marginVertical: 10,
   },
   //   goBackText: {
   //     color: "rgba(255,255,255,0.8)",
   //     fontSize: 14,
   //   }
+  contentWrapper: {
+    flex: 1,
+    width: "100%",
+    paddingTop: 0,
+    paddingHorizontal: 20,
+  },
 });

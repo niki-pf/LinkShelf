@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Alert, View, Text, Image } from "react-native";
+import {
+  Alert,
+  View,
+  Text,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 import { supabase } from "../lib/supabase";
 import { Button, Input } from "@rneui/themed";
 
@@ -27,61 +35,75 @@ export default function Auth() {
   }
 
   return (
-    <View
-      style={{
-        width: "100%",
-        maxWidth: 400,
-        alignItems: "center",
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Image
-        source={require("../assets/images/logotype.png")}
-        style={{ width: 300, height: 300 }}
-        resizeMode="contain"
-      />
-
-      <Text
-        style={{
-          fontSize: 16,
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: 30,
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        Save and organize your links
-      </Text>
+        {/* // <View
+    //   style={{
+    //     width: "100%",
+    //     maxWidth: 400,
+    //     alignItems: "center",
+    //   }}
+    // > */}
+        <Image
+          source={require("../assets/images/logotype.png")}
+          style={{ width: 300, height: 300 }}
+          resizeMode="contain"
+        />
 
-      <Input
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        placeholder="email@example.com"
-        inputContainerStyle={{ width: "90%" }}
-      />
-      <Input
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        autoCapitalize="none"
-        placeholder="Password"
-        inputContainerStyle={{ width: "90%" }}
-      />
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: 30,
+          }}
+        >
+          Save and organize your links
+        </Text>
 
-      <Button
-        title="Sign in"
-        onPress={signIn}
-        disabled={loading}
-        containerStyle={{ width: "100%", marginTop: 10 }}
-      />
-      <Button
-        title="Sign up"
-        onPress={signUp}
-        disabled={loading}
-        type="outline"
-        containerStyle={{ width: "100%", marginTop: 10 }}
-      />
-    </View>
+        <Input
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          placeholder="email@example.com"
+          autoFocus={true}
+          inputContainerStyle={{ width: "90%" }}
+        />
+        <Input
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          autoCapitalize="none"
+          placeholder="Password"
+          inputContainerStyle={{ width: "90%" }}
+        />
+
+        <Button
+          title="Sign in"
+          onPress={signIn}
+          disabled={loading}
+          containerStyle={{ width: "100%", marginTop: 10 }}
+        />
+        <Button
+          title="Sign up"
+          onPress={signUp}
+          disabled={loading}
+          type="outline"
+          containerStyle={{ width: "100%", marginTop: 10 }}
+        />
+        {/* // </View> */}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
