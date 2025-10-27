@@ -113,7 +113,6 @@ Starta Android Studio eller iOS Simulator.
 - **Logga in:**  
   Ange din e-postadress och lösenord, tryck på **Log In**.  
 
----
 
 ### 2. Dashboard
 - **Senast sparade länkar:**  
@@ -136,7 +135,6 @@ Starta Android Studio eller iOS Simulator.
 - **Se alla länkar:**  
   Tryck på **Se alla →** för att komma till söksidan med alla sparade länkar.  
 
----
 
 ### 3. Search-sidan (alla länkar)
 - **Sökfält:**  
