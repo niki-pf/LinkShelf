@@ -46,15 +46,15 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 ## 🛠 Teknologier
 
 ### Frontend:
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/docs/)
+- [React Native](https://reactnative.dev/) Ramverk för att bygga mobilappar med React.  
+- [TypeScript](https://www.typescriptlang.org/docs/) Starkt typat språk som används för säkrare och mer strukturerad kod.
 ### Backend: 
-- [Supabase](https://supabase.com/docs)
-- [Edge Functions](https://supabase.com/docs/guides/functions)
+- [Supabase](https://supabase.com/docs) Backend som hanterar databasen och autentisering.  
+- [Edge Functions](https://supabase.com/docs/guides/functions) Serverlösa funktioner för att hämta metadata från länkar.
 
 ### Emulator, Utecklingsmiljö
-- [Expo](https://docs.expo.dev/)
-- [Android Studio](https://developer.android.com/studio)
+- [Expo](https://docs.expo.dev/) Verktyg för att snabbt köra och testa React Native-appar.  
+- [Android Studio](https://developer.android.com/studio)  Android-emulator för att testa appen på olika enheter.
 
 ---
 
