@@ -32,7 +32,7 @@ Appen är byggd i **React Native**, **TypeScript** och använder **Supabase** so
 Till en början funderade jag på att enbart använda regex för att extrahera information från länkar. Men vissa sidor, som YouTube, går inte att skrapa på ett enkelt sätt med regex, vilket ledde till att jag valde Edge Functions. I praktiken gick det ändå inte att hämta all metadata med enbart Edge Functions – för fullständig data hade man behövt ytterligare logik utanför min nuvarande kunskap. Regex hade kanske räckt för enklare sidor, men Edge Functions gör lösningen mer flexibel och robust för mer komplexa eller dynamiska sidor.
 
 ---
-## Funktioner
+## ✨ Funktioner
 
 - Inloggning med autentisiering
 - Registrering med bekräftelsemail
@@ -43,7 +43,7 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 
 ---
 
-## Teknologier
+## 🛠 Teknologier
 
 ### Frontend:
 - [React Native](https://reactnative.dev/)
@@ -103,7 +103,7 @@ Starta Android Studio eller iOS Simulator.
 
 ---
 
-## Användning
+## 🚀 Användning
 
 ### 1. Index / Inloggning / Registrering
 - **Registrera nytt konto:**  
