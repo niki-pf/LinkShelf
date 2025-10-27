@@ -148,3 +148,19 @@ Starta Android Studio eller iOS Simulator.
 
 - **Back-knapp:**  
   Tryck på bakåtknappen för att återvända till dashboard.
+
+---
+
+## 📂 [Projektstruktur](#-projektstruktur)
+
+---
+## 🗓 [Sprintplan](#-sprintplan)
+
+---
+## 🤝 [Bidra](#-bidra)
+---
+## 📚 [Lärdomar](#-lärdomar)
+---
+##📜 [Licens](#-licens)
+---
+##🚀 [Utvecklingsmöjligheter](#-utvecklingsmöjligheter)
