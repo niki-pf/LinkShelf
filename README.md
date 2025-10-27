@@ -62,11 +62,14 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 Följ stegen nedan för att köra appen lokalt på din dator eller mobil.
 
 ```bash
-# 1. Klona repo
+#1. Klona repo
 git clone https://github.com/niki-pf/LinkShelf
 
-# 2. Gå in i projektmappen
+#2. Gå in i projektmappen
 cd LinkShelf
+
+#3. Installera beroenden
+npm install
 
 #4. Installera Expo CLI (om du inte redan har det)
 npm install -g expo-cli
