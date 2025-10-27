@@ -59,18 +59,11 @@ Till en början funderade jag på att enbart använda regex för att extrahera i
 ---
 
 ## ⚙️ Installation
+Följ stegen nedan för att köra appen lokalt på din dator eller mobil.
+
+### 1. Klona repo
 ```bash
-# Klona repo
-git clone https://github.com/ingakonstigheter/e-commerce-maison-nova
+git clone https://github.com/niki-pf/LinkShelf
 
-# Gå in i projektmappen
-cd e-commerce-maison-nova
-
-# Installera beroenden
-npm install
-
-# Starta utvecklingsserver
-npm run dev
-```
-
+### 2. Gå in i projektmappen
 ---
