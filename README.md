@@ -102,3 +102,51 @@ Starta Android Studio eller iOS Simulator.
 **Android Studio** eller **Xcode** för att köra emulator
 
 ---
+
+## Användning
+
+### 1. Index / Inloggning / Registrering
+- **Registrera nytt konto:**  
+  Ange e-postadress och lösenord, tryck på **Sign Up**.  
+  Vänta på bekräftelsemejl och bekräfta länken i mejlet.  
+
+- **Logga in:**  
+  Ange din e-postadress och lösenord, tryck på **Log In**.  
+
+---
+
+### 2. Dashboard
+- **Senast sparade länkar:**  
+  Här visas de senaste länkarna du sparat.  
+
+- **Lägg till ny länk:**  
+  Klistra in en länk i fältet och tryck på **Spara**.  
+
+- **Redigera länk:**  
+  Tryck på pennikonen för en länk.  
+  Redigera titel och/eller beskrivning, sedan **Spara** eller **Avbryt**.  
+
+- **Ta bort länk:**  
+  Tryck på papperskorgen.  
+  Bekräfta eller avbryt raderingen.  
+
+- **Logga ut:**  
+  Tryck på logga ut-knappen uppe till höger.  
+
+- **Se alla länkar:**  
+  Tryck på **Se alla →** för att komma till söksidan med alla sparade länkar.  
+
+---
+
+### 3. Search-sidan (alla länkar)
+- **Sökfält:**  
+  Skriv i fältet för att filtrera länkar, listan uppdateras direkt med matchningar.  
+
+- **Redigera / uppdatera länkar:**  
+  Samma som i dashboard: tryck på pennan för att redigera titel/beskrivning.  
+
+- **Ta bort länkar:**  
+  Tryck på papperskorgen, bekräfta eller avbryt.  
+
+- **Back-knapp:**  
+  Tryck på bakåtknappen för att återvända till dashboard.
