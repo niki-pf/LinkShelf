@@ -216,6 +216,12 @@ LinkShelf
 ## 🤝 [Bidra](#-bidra)
 ---
 ## 📚 [Lärdomar](#-lärdomar)
+- **React Native** – Jag fick praktisk erfarenhet av React Native. Det påminner om React JS, men det finns nya koncept och mobil-specifika utmaningar som var roliga att utforska.
+- **Miljökonfiguration & virtualisering** – En stor del av projektet handlade om att få alla miljöer att prata med varandra (Expo, Android Studio, Supabase, Edge Functions). Det var mycket felsökning som inte alltid handlade om själva koden, men det gav mig en större förståelse för hur allt hänger ihop.
+- **Backend-tänk** – Jag lärde mig hur databaser, autentisering och serverfunktioner kan integreras med frontend, och fick en bättre känsla för hur backend-flöden fungerar i praktiken.
+- **UI/UX för mobil** – Att fokusera på mobil gjorde att jag fick tänka om kring UI/UX, och jag fick större förståelse för hur viktigt det är med användarvänligt gränssnitt på mobil.
+
+Helhetsperspektiv – Genom projektet har jag fått större insikt i hur frontend, backend och olika miljöer kan samspela i ett komplett system.
 
 ---
 ## 📜 [Licens](#-licens)
