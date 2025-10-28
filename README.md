@@ -222,11 +222,11 @@ Detta projekt är utvecklat i utbildningssyfte och är inte avsett för produkti
 
 Några idéer för framtida förbättringar och vidareutveckling av projektet:
 
-🔑 **Lösenordsåterställning (Password Recovery)** – möjliggöra att användare kan återställa sitt konto via e-post.
-🗂️ **Kategorier** – skapa och spara länkar i olika kategorier för bättre överblick.
-🔗 **Dela-knapp** – snabbt kunna kopiera eller dela en sparad länk vidare till andra appar.
-🏷️ **Taggar** – låta användare lägga till taggar för att beskriva innehållet mer specifikt.
-🔍 **Filtrering & sortering** – kunna filtrera och sortera länkar baserat på t.ex. kategori, tagg eller datum.
-⭐ **Favoriter** – markera viktiga länkar som favoriter för snabb åtkomst.
-☁️ **Offline-stöd** – cacha sparade länkar lokalt så de kan visas utan internetuppkoppling.
-🧭 **Förhandsvisning av länkar** – visa en liten preview (bild, titel, beskrivning) när man sparar en ny länk.
+- 🔑 **Lösenordsåterställning (Password Recovery)** – möjliggöra att användare kan återställa sitt konto via e-post.
+- 🗂️ **Kategorier** – skapa och spara länkar i olika kategorier för bättre överblick.
+- 🔗 **Dela-knapp** – snabbt kunna kopiera eller dela en sparad länk vidare till andra appar.
+- 🏷️ **Taggar** – låta användare lägga till taggar för att beskriva innehållet mer specifikt.
+- 🔍 **Filtrering & sortering** – kunna filtrera och sortera länkar baserat på t.ex. kategori, tagg eller datum.
+- ⭐ **Favoriter** – markera viktiga länkar som favoriter för snabb åtkomst.
+- ☁️ **Offline-stöd** – cacha sparade länkar lokalt så de kan visas utan internetuppkoppling.
+- 🧭 **Förhandsvisning av länkar** – visa en liten preview (bild, titel, beskrivning) när man sparar en ny länk.
