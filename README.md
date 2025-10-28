@@ -1,6 +1,6 @@
 # LinkShelf 🔗 Din Personliga Länksamling
 
-En mobilapp utvecklad i **React Native (Expo)** och **Supabase**. Appens syfte är att låta användare spara webblänkar automatiskt. Huvudfokus ligger på **prestanda** och **effektiv datainsamling** genom att flytta den tunga uppgiften (metadata-skrapning) till en snabb **serverlös arkitektur (Edge Function)**.
+En **mobilapp** för att **spara*, **organisera** och **redigera** webblänkar. Byggd med **React Native (Expo)** och **Supabase**, med automatisk hämtning av **metadata**.
 
 
 ---
