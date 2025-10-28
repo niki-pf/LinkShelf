@@ -1,6 +1,6 @@
 # LinkShelf 🔗 Din Personliga Länksamling
 
-En **mobilapp** för att **spara*, **organisera** och **redigera** webblänkar. Byggd med **React Native (Expo)** och **Supabase**, med automatisk hämtning av **metadata**.
+En **mobilapp** för att **spara**, **organisera** och **redigera** webblänkar. Byggd med **React Native (Expo)** och **Supabase**, med automatisk hämtning av **metadata**.
 
 
 ---
