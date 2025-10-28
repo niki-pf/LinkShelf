@@ -154,44 +154,63 @@ Starta Android Studio eller iOS Simulator.
 ## 📂 [Projektstruktur](#-projektstruktur)
 
 LinkShelf
+
 ├── .expo/
+
 ├── .vscode/
+
 ├── app/
+
 │ ├── _layout.tsx
+
 │ ├── dashboard.tsx
+
 │ ├── globals.css
+
 │ ├── index.tsx
+
 │ ├── search.tsx
+
 │ ├── assets/
+
 │ └── components/
+
 │ ├── Auth.tsx
+
 │ ├── EditModal.tsx
+
 │ ├── LinkCard.tsx
+
 │ ├── SaveLinkInput.tsx
+
 │ └── SearchBar.tsx
+
 ├── lib/
+
 │ ├── supabase.ts
+
 │ └── util.ts
+
 ├── node_modules/
+
 ├── supabase/
+
 │ ├── Functions/
+
 │ │ └── meta-fetch/
+
 │ │ └── index.ts
-├── .gitignore
-├── app.json
-├── app.json.bak
-├── eslint.config.js
-└── metro.config.js
+
 
 ---
 
 ## 📈 [Arbetsflöde
 
-🗓 Veckovis planering – Projektet planerades i korta iterationer (”mini-sprintar”) där veckans fokus och mål definierades, till exempel att implementera en viss funktion eller lösa buggar.
+🗓 **Veckovis planering** – Projektet planerades i korta iterationer (”mini-sprintar”) där veckans fokus och mål definierades, till exempel att implementera en viss funktion eller lösa buggar.
 
-📋 GitHub Projects som planeringsstöd – Använde GitHub Projects för att strukturera arbetet, skapa kort för olika uppgifter och hålla koll på framstegen under utvecklingen.
+📋 **GitHub Projects** som planeringsstöd – Använde GitHub Projects för att strukturera arbetet, skapa kort för olika uppgifter och hålla koll på framstegen under utvecklingen.
 
-🌱 Feature branches – Nya funktioner och förbättringar utvecklades i separata branches för att hålla main-branchen stabil och ren. När funktionaliteten testats mergades den in i main via pull requests.
+🌱 **Feature branches** – Nya funktioner och förbättringar utvecklades i separata branches för att hålla main-branchen stabil och ren. När funktionaliteten testats mergades den in i main via pull requests.
 
 ---
 ## 🗓 [Sprintplan](#-sprintplan)
