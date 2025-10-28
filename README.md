@@ -156,11 +156,8 @@ Starta Android Studio eller iOS Simulator.
 LinkShelf
 
 ├── .expo/
-
 ├── .vscode/
-
 ├── app/
-
 │ ├── _layout.tsx
 
 │ ├── dashboard.tsx
@@ -168,7 +165,6 @@ LinkShelf
 │ ├── globals.css
 
 │ ├── index.tsx
-
 │ ├── search.tsx
 
 │ ├── assets/
