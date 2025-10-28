@@ -152,6 +152,7 @@ Starta Android Studio eller iOS Simulator.
 ---
 
 ## 📂 [Projektstruktur](#-projektstruktur)
+
 LinkShelf
 ├── .expo/
 ├── .vscode/
@@ -181,6 +182,7 @@ LinkShelf
 ├── app.json.bak
 ├── eslint.config.js
 └── metro.config.js
+
 ---
 
 ## 📈 [Arbetsflöde
