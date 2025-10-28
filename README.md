@@ -152,30 +152,35 @@ Starta Android Studio eller iOS Simulator.
 ---
 
 ## 📂 [Projektstruktur](#-projektstruktur)
-
 LinkShelf
 ├── .expo/
 ├── .vscode/
 ├── app/
-│   ├── _layout.tsx
-│   ├── dashboard.tsx
-│   ├── globals.css
-│   ├── index.tsx
-│   ├── search.tsx
-│   ├── assets/
-│   └── components/
-│       ├── Auth.tsx
-│       ├── EditModal.tsx
-│       ├── LinkCard.tsx
-│       ├── SaveLinkInput.tsx
-│       └── SearchBar.tsx
+│ ├── _layout.tsx
+│ ├── dashboard.tsx
+│ ├── globals.css
+│ ├── index.tsx
+│ ├── search.tsx
+│ ├── assets/
+│ └── components/
+│ ├── Auth.tsx
+│ ├── EditModal.tsx
+│ ├── LinkCard.tsx
+│ ├── SaveLinkInput.tsx
+│ └── SearchBar.tsx
 ├── lib/
-│   ├── supabase.ts
-│   └── util.ts
+│ ├── supabase.ts
+│ └── util.ts
 ├── node_modules/
 ├── supabase/
-|       ├──Functions/meta-fetch
-           ├── index.ts        
+│ ├── Functions/
+│ │ └── meta-fetch/
+│ │ └── index.ts
+├── .gitignore
+├── app.json
+├── app.json.bak
+├── eslint.config.js
+└── metro.config.js
 ---
 
 ## 📈 [Arbetsflöde
