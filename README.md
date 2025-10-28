@@ -187,9 +187,11 @@ LinkShelf
 
 ## 📈 [Arbetsflöde
 
-👥 Planering och sprintar (SCRUM) – Kommande veckors arbete bröts ned i kort/issues på GitHub Projects
+🗓 Veckovis planering – Projektet planerades i korta iterationer (”mini-sprintar”) där veckans fokus och mål definierades, till exempel att implementera en viss funktion eller lösa buggar.
 
-🌱 Feature branches kopplade till GitHub Projects – Varje ny branch skapades direkt från ett kort på GitHub Projects, vilket gjorde det enkelt att hålla koppling mellan planering och kod.
+📋 GitHub Projects som planeringsstöd – Använde GitHub Projects för att strukturera arbetet, skapa kort för olika uppgifter och hålla koll på framstegen under utvecklingen.
+
+🌱 Feature branches – Nya funktioner och förbättringar utvecklades i separata branches för att hålla main-branchen stabil och ren. När funktionaliteten testats mergades den in i main via pull requests.
 
 ---
 ## 🗓 [Sprintplan](#-sprintplan)
