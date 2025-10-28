@@ -11,7 +11,6 @@ En **mobilapp** för att **spara**, **organisera** och **redigera** webblänkar.
 - 🛠 [Teknologier](#-teknologier)
 - ⚙️ [Installation](#-installation)
 - 🚀 [Användning](#-användning)
-- 📂 [Projektstruktur](#-projektstruktur)
 - 📈 [Arbetsflöde](#-arbetsflöde)
 - 🗓 [Sprintplan](#-sprintplan)
 - 🤝 [Bidra](#-bidra)
@@ -148,36 +147,6 @@ Starta Android Studio eller iOS Simulator.
 
 - **Back-knapp:**  
   Tryck på bakåtknappen för att återvända till dashboard.
-
----
-
-## 📂 [Projektstruktur](#-projektstruktur)
-
-LinkShelf
-├── .expo/
-├── .vscode/
-├── app/
-│ ├── _layout.tsx
-│ ├── dashboard.tsx
-│ ├── globals.css
-│ ├── index.tsx
-│ ├── search.tsx
-│ ├── assets/
-│ └── components/
-│ ├── Auth.tsx
-│ ├── EditModal.tsx
-│ ├── LinkCard.tsx
-│ ├── SaveLinkInput.tsx
-│ └── SearchBar.tsx
-├── lib/
-│ ├── supabase.ts
-│ └── util.ts
-├── node_modules/
-├── supabase/
-│ ├── Functions/
-│ │ └── meta-fetch/
-│ │ └── index.ts
-└── metro.config.js
 
 ---
 
