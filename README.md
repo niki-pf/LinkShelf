@@ -105,7 +105,7 @@ Starta Android Studio eller iOS Simulator.
 
 ## 🚀 Användning
 
-#### 1. Index / Inloggning / Registrering
+#### 1. Inloggning / Registrering
 - **Registrera nytt konto:**  
   Ange e-postadress och lösenord, tryck på **Sign Up**.  
   Vänta på bekräftelsemejl och bekräfta länken i mejlet.  
@@ -153,14 +153,82 @@ Starta Android Studio eller iOS Simulator.
 
 ## 📂 [Projektstruktur](#-projektstruktur)
 
+LinkShelf
+├── .expo/
+├── .vscode/
+├── app/
+│   ├── _layout.tsx
+│   ├── dashboard.tsx
+│   ├── globals.css
+│   ├── index.tsx
+│   ├── search.tsx
+│   ├── assets/
+│   └── components/
+│       ├── Auth.tsx
+│       ├── EditModal.tsx
+│       ├── LinkCard.tsx
+│       ├── SaveLinkInput.tsx
+│       └── SearchBar.tsx
+├── lib/
+│   ├── supabase.ts
+│   └── util.ts
+├── node_modules/
+├── supabase/
+|       ├──Functions/meta-fetch
+           ├── index.ts        
+
+           
+---
+
+## 📈 [Arbetsflöde
+
+👥 Planering och sprintar (SCRUM) – Kommande veckors arbete bröts ned i kort/issues på GitHub Projects
+
+🌱 Feature branches kopplade till GitHub Projects – Varje ny branch skapades direkt från ett kort på GitHub Projects, vilket gjorde det enkelt att hålla koppling mellan planering och kod.
+
 ---
 ## 🗓 [Sprintplan](#-sprintplan)
+
+### Vecka 1 – Projektuppstart & Designplanering
+- Skapa övergripande designskisser i Figma.
+- Säkerställ att alla miljöer fungerar och kommunicerar korrekt: Supabase, Expo, Edge Functions och Android Studio.
+- Konfigurera lokal utvecklingsmiljö (aktivera virtualisering, SDK-installationer m.m.).
+- Sätt upp projektstruktur och mappar.
+- Implementera grundläggande autentisering/inloggning.
+
+
+### Vecka 2 – Komponentuppdelning & Implementering
+- Bryt ned applikationen i mindre, återanvändbara komponenter.
+- Implementera funktionalitet steg för steg enligt prioriterad ordning.
+- Säkerställ att UI och logik fungerar ihop.
+- Börja testa flöden mellan olika vyer.
+
+### Vecka 3 – Finputs & Avrundning
+- Felsök och fixa buggar.
+- Förbättra UI/UX och användarflöden.
+- Skriv README och dokumentation.
+- Förbered projektet för inlämning/demonstration.
 
 ---
 ## 🤝 [Bidra](#-bidra)
 ---
 ## 📚 [Lärdomar](#-lärdomar)
+
 ---
 ## 📜 [Licens](#-licens)
+
+Detta projekt är utvecklat i utbildningssyfte och är inte avsett för produktion.
+
 ---
 ## 🚀 [Utvecklingsmöjligheter](#-utvecklingsmöjligheter)
+
+Några idéer för framtida förbättringar och vidareutveckling av projektet:
+
+🔑 **Lösenordsåterställning (Password Recovery)** – möjliggöra att användare kan återställa sitt konto via e-post.
+🗂️ **Kategorier** – skapa och spara länkar i olika kategorier för bättre överblick.
+🔗 **Dela-knapp** – snabbt kunna kopiera eller dela en sparad länk vidare till andra appar.
+🏷️ **Taggar** – låta användare lägga till taggar för att beskriva innehållet mer specifikt.
+🔍 **Filtrering & sortering** – kunna filtrera och sortera länkar baserat på t.ex. kategori, tagg eller datum.
+⭐ **Favoriter** – markera viktiga länkar som favoriter för snabb åtkomst.
+☁️ **Offline-stöd** – cacha sparade länkar lokalt så de kan visas utan internetuppkoppling.
+🧭 **Förhandsvisning av länkar** – visa en liten preview (bild, titel, beskrivning) när man sparar en ny länk.
