@@ -149,7 +149,7 @@ Starta Android Studio eller iOS Simulator.
 
 ---
 
-## 📈 [Arbetsflöde
+## 📈 [Arbetsflöde]
 
 🗓 **Veckovis planering** – Projektet planerades i korta iterationer (”mini-sprintar”) där veckans fokus och mål definierades, till exempel att implementera en viss funktion eller lösa buggar.
 
