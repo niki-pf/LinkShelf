@@ -1,7 +1,8 @@
 # LinkShelf 🔗 Din Personliga Länksamling
 
+<img width="1536" height="526" alt="linkchelf logo" src="https://github.com/user-attachments/assets/d421fda9-8678-4436-9a16-c169d052cb81" />
+
 En **mobilapp** för att **spara**, **organisera** och **redigera** webblänkar. Byggd med **React Native (Expo)** och **Supabase**, med automatisk hämtning av **metadata**.
-<img width="1536" height="1024" alt="ChatGPT Image 10 okt  2025 10_18_21" src="https://github.com/user-attachments/assets/94160e4f-8e63-4b7e-b719-6ffc1e8802c9" />
 
 
 
