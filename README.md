@@ -1,12 +1,13 @@
 # LinkShelf 🔗 Din Personliga Länksamling
 
-<img width="1536" height="526" alt="linkchelf logo" src="https://github.com/user-attachments/assets/d421fda9-8678-4436-9a16-c169d052cb81" />
+
 
 En **mobilapp** för att **spara**, **organisera** och **söka** webblänkar. Byggd med **React Native (Expo)** och **Supabase**, med automatisk hämtning av **metadata**.
 
 
 
 ---
+<img width="1536" height="526" alt="linkchelf logo" src="https://github.com/user-attachments/assets/d421fda9-8678-4436-9a16-c169d052cb81" />
 
 ## 📑 Innehåll
 - 📖 [Om projektet](#-om-projektet)
