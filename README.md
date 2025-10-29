@@ -13,7 +13,6 @@ En **mobilapp** för att **spara**, **organisera** och **redigera** webblänkar.
 - 🚀 [Användning](#-användning)
 - 📈 [Arbetsflöde](#-arbetsflöde)
 - 🗓 [Sprintplan](#-sprintplan)
-- 🤝 [Bidra](#-bidra)
 - 📚 [Lärdomar](#-lärdomar)
 - 📜 [Licens](#-licens)
 - 🚀 [Utvecklingsmöjligheter](#-utvecklingsmöjligheter)
@@ -181,8 +180,7 @@ Starta Android Studio eller iOS Simulator.
 - Skriv README och dokumentation.
 - Förbered projektet för inlämning/demonstration.
 
----
-## 🤝 [Bidra](#-bidra)
+
 ---
 ## 📚 [Lärdomar](#-lärdomar)
 - **React Native** – Jag fick praktisk erfarenhet av React Native. Det påminner om React JS, men det finns nya koncept och mobil-specifika utmaningar som var roliga att utforska.
